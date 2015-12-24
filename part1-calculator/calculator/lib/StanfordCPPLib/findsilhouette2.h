@@ -1,0 +1,5 @@
+#ifndef FINDSILHOUETTE
+#define FINDSILHOUETTE
+
+#endif // FINDSILHOUETTE
+
