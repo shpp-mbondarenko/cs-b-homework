@@ -16,13 +16,13 @@ using namespace std;
 
 //functions declaration
 /**
- * Implement operations betwen two numbers
+ * Implement operations between two numbers
  * @param a - First parameter
  * @param b - Second parameter
  * @param symbol - The sign of operation "+-^/*"
  * @return - double result of calculation
  */
-double operationsBetwenNum(double firstParam, double secondParam, char symbol){
+double executeOperation(double firstParam, double secondParam, char symbol){
     double res;
     if(symbol == '+'){
         res = firstParam + secondParam;
@@ -48,30 +48,17 @@ double operationsBetwenNum(double firstParam, double secondParam, char symbol){
  * @param ch - Char from input formula
  * @return - true its a letter
  */
-bool checkSymbolIsVariable(char ch){
+bool checkVariable(char ch){
     return isalpha(ch);
 }
 
-bool ascii[256] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   1,1,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0, //100
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, //200
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 /**
- * Return true if char is euals signs not alphabet char or digit
+ * Return true if char is equals signs not alphabetic char or digit
  * @param ch - Char from input formula
  * @return - true if it is operation sign
  */
-bool isOperatorSign(char ch){
-    return ascii[unsigned(ch)];
+bool isOperator(char ch){
+    return (ch == '+' || ch == '-' || ch == '/' || ch == '*' || ch == '^');
 }
 /**
  * Make token from string using current position of "cursor"
@@ -80,12 +67,12 @@ bool isOperatorSign(char ch){
  * @param inputFormula - User's string
  * @return - token - or its variable or its operation sign
  */
-string selectTokenFromString(int pos, string inputFormula){
+string splitIntoTokens(int pos, string inputFormula){
     string res;
-    if (isOperatorSign(inputFormula[pos])){
+    if (isOperator(inputFormula[pos])){
         res = inputFormula[pos];
     }else {
-        while (!isOperatorSign(inputFormula[pos])) {
+        while (!isOperator(inputFormula[pos])) {
             res += inputFormula[pos];
             pos++;
             if(pos == inputFormula.length()){
@@ -101,7 +88,7 @@ string selectTokenFromString(int pos, string inputFormula){
  * @param ch - Operator sign
  * @return - Priority of operator
  */
-int setPriorityToOperator(char ch){
+int setPriority(char ch){
     int res;
     if(ch == '+' ||ch == '-'){
         res = 0;
@@ -123,7 +110,7 @@ int setPriorityToOperator(char ch){
  * @param postFixNotat - Queue of operators and operands in postfix notation
  * @return - Result of user's input formula
  */
-double calcResultFromPostfixNotation(Queue<string> postFixNotat){
+double calculateResult(Queue<string> postFixNotat){
     double res;
     Vector<string> vec;
     while(!postFixNotat.isEmpty()){
@@ -134,11 +121,11 @@ double calcResultFromPostfixNotation(Queue<string> postFixNotat){
             break;
         }
         string tmp = vec[i];
-        if(isOperatorSign(tmp[0]) && i >= 2){
+        if(isOperator(tmp[0]) && i >= 2){
             string tok = vec[i];
             double secondOperand = atof(vec[i-1].c_str());
             double firstOperand = atof(vec[i-2].c_str());
-            double calcResult =  operationsBetwenNum(firstOperand,secondOperand,tok[0]);
+            double calcResult =  executeOperation(firstOperand,secondOperand,tok[0]);
             string r2 = to_string(calcResult);
             vec.set(i-2, r2);
             vec.remove(i-1);
@@ -149,16 +136,16 @@ double calcResultFromPostfixNotation(Queue<string> postFixNotat){
     return res = atof(vec[0].c_str());
 }
 /**
- * Replase string of user input.
+ * Replace string of user input.
  * If we have one variable appearing two or more times - function
  * replace this variable automatically.
  * @param a - String - user's formula
  */
-void replaceStringIfPresentVariable(string &inputFormula){
+void determiningVariables(string &inputFormula){
     Map<char, string> variables;
     for(int i = 0; i < inputFormula.length(); i++){ //if we have variables - ask user to enter a number and replace string
         char ch = inputFormula[i];
-        if(checkSymbolIsVariable(ch)){
+        if(checkVariable(ch)){
             if(variables.containsKey(ch)){
                 inputFormula.replace(i,1,variables.get(ch));
             }else{
@@ -179,13 +166,12 @@ void replaceStringIfPresentVariable(string &inputFormula){
  * @param postFixNotat - Queue. Postfix notation of formula
  * @param token - Token for user's string
  */
-void caterTheOperator(myStack<string>& operandStack, Queue<string>& postfixNotation, string token){
+void moveOperator(myStack<string>& operandStack, Queue<string>& postfixNotation, string token){
     if(operandStack.isEmpty()){ //if stack is empty then we add first sign to stack
         operandStack.push(token);
     }else if(!operandStack.isEmpty()){
-        if(setPriorityToOperator(token[0])/* op1 */ <= setPriorityToOperator((operandStack.peek())[0])/* op2 */){
-            //compare current token with top sign in stack if sign in stack have bigger priority then put him in
-            //queue, and token put in stack
+        if(setPriority(token[0])/* op1 */ <= setPriority((operandStack.peek())[0])/* op2 */){
+            //compare current token with top sign in stack if sign in stack have bigger priority than put him in //queue, and token put in stack
             string z = operandStack.pop();
             if(z != "("){
                 postfixNotation.enqueue(z);
@@ -194,13 +180,13 @@ void caterTheOperator(myStack<string>& operandStack, Queue<string>& postfixNotat
             /**
              * if in stack we have more than 1 element than comparing
              * them and push some of them to queue. in this way we have
-             * allways one element in stack
+             * always one element in stack
              */
             if(operandStack.size() >= 2){
-                if(!isOperatorSign(postfixNotation.back()[0])){
+                if(!isOperator(postfixNotation.back()[0])){
                     string firstOperand = operandStack.pop();
                     string secondOperand = operandStack.pop();
-                    if(setPriorityToOperator(firstOperand[0]) <= setPriorityToOperator(secondOperand[0])){
+                    if(setPriority(firstOperand[0]) <= setPriority(secondOperand[0])){
                         if(secondOperand != "(" & firstOperand != "("){
                             postfixNotation.enqueue(secondOperand);
                             operandStack.push(firstOperand);
@@ -220,23 +206,23 @@ void caterTheOperator(myStack<string>& operandStack, Queue<string>& postfixNotat
 }
 
 /**
- * On input we have a string that write user
+ * On input we have a string that user's write
  * This function show to user - result
  * @param inputFormula - string of user's input
  */
-void retrievingResult(string &inputFormula){
-    replaceStringIfPresentVariable(inputFormula);
+void displayResult(string &inputFormula){
+    determiningVariables(inputFormula);
     myStack<string> operandStack;
     Queue<string> postfixNotation;
     for(int pos = 0; pos < inputFormula.length(); pos++){
         string token;
-        token = selectTokenFromString(pos, inputFormula);
+        token = splitIntoTokens(pos, inputFormula);
         int tokenLenght = token.length();
         if(tokenLenght > 1){
             pos += tokenLenght - 1;
         }
         //if token is number then add to queue
-        if(!isOperatorSign(token[0])){
+        if(!isOperator(token[0])){
             postfixNotation.enqueue(token);
         }
         if(token == "("){
@@ -252,8 +238,8 @@ void retrievingResult(string &inputFormula){
             }
         }
         //if token is operator sign "+-/*^"
-        if(isOperatorSign(token[0]) && (token != "(" && token != ")")){
-            caterTheOperator(operandStack, postfixNotation, token);
+        if(isOperator(token[0]) && (token != "(" && token != ")")){
+            moveOperator(operandStack, postfixNotation, token);
         }
     }
     //add last element in stack to queue
@@ -261,7 +247,7 @@ void retrievingResult(string &inputFormula){
         string a = operandStack.pop();
         postfixNotation.enqueue(a);
     }
-    double endRes = calcResultFromPostfixNotation(postfixNotation);
+    double endRes = calculateResult(postfixNotation);
     cout << "RESULT = " << endRes << endl;
 }
 
@@ -269,7 +255,7 @@ void retrievingResult(string &inputFormula){
  * Check if user input have right quantity of round brackets
  * @param inputFormula - string of user's input
  */
-bool checkForBrackets(string &inputFormula){
+bool checkBrackets(string &inputFormula){
     int openB = 0;
     int closeB = 0;
     for(int i = 0; i < inputFormula.length(); i++){
@@ -286,15 +272,15 @@ bool checkForBrackets(string &inputFormula){
 
 /**
  * Check if we don't have two operators after each other
- * @param inputFormula - string of user's input
- * @return - true if we hawe somethilg like that "6++7"
+ * @param input Formula - string of user's input
+ * @return - true if we have something like that "6++7"
  */
-bool checkForOperators(string &inputFormula){
+bool checkOperators(string &inputFormula){
     bool res;
     for(int i = 0; i < inputFormula.length(); i++){
         char ch = inputFormula[i];
         char ch2 = inputFormula[i+1];
-        if((isOperatorSign(ch) && (ch != '(') && (ch != ')'))&&(isOperatorSign(ch2) && (ch2 != '(') && (ch2 != ')'))){
+        if((isOperator(ch) && (ch != '(') && (ch != ')'))&&(isOperator(ch2) && (ch2 != '(') && (ch2 != ')'))){
             res = false;
             cout << "Wrong writing operators. Your formula is invalid! ";
             break;
@@ -313,10 +299,10 @@ int main(){
         if(inputFormula == "exit"){
             break;
         }
-        if(checkForBrackets(inputFormula) && checkForOperators(inputFormula)){
-            retrievingResult(inputFormula);
+        if(checkBrackets(inputFormula) && checkOperators(inputFormula)){
+            displayResult(inputFormula);
         }else{
-            checkForBrackets(inputFormula) == false ? cout << "Your brackets is invalid!" << endl : cout << "" << endl; ;
+            checkBrackets(inputFormula) == false ? cout << "Your brackets is invalid!" << endl : cout << "" << endl; ;
         }
     }
     return 0;

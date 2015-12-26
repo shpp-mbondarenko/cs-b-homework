@@ -11,7 +11,7 @@
 using namespace std;
 
 /**
- * The Coordinate struct. Save position of pixel
+ * The Coordinate structure. Save position of pixel
  */
 struct Coordinate{
     int y;
@@ -44,7 +44,6 @@ public:
 /**
  * Load image.
  * Creating binary representation of image.
- *
  * @param filename - Name of loaded image
  * @return - Vector two dimensional comprising of 0 and 1
  */
@@ -69,13 +68,12 @@ Vector<Vector<bool> > createBinaryGridFromFile(string filename){
 
 /**
  * Fill in the vector coordinates of the object
- *
  * @param img - The binarized user's image.
  * @param x - x coordinate.
  * @param y - y coordinate.
  * @param silho - The vector of the silhouette Coordinates.
  */
-void getSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordinate> &silho) {
+void getSingleSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordinate> &silho) {
     if((x<=img[0].size()) && (y<=img.size())){
         if (!(img[y][x])) {
             return;
@@ -88,27 +86,26 @@ void getSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordinate> 
     if((x<=img[0].size()) && (y<=img.size())){
         img[y][x] = 0;
     }
-    getSilhouette(img, x - 1, y, silho);
-    getSilhouette(img, x + 1, y, silho);
-    getSilhouette(img, x, y - 1, silho);
-    getSilhouette(img, x, y + 1, silho);
+    getSingleSilhouette(img, x - 1, y, silho);
+    getSingleSilhouette(img, x + 1, y, silho);
+    getSingleSilhouette(img, x, y - 1, silho);
+    getSingleSilhouette(img, x, y + 1, silho);
 }
 
 /**
- * Create Vector of coordinares of one silhouette
- * @param img - Binarized user's image
+ * Create Vector of coordinates of one silhouette
+ * @param image - Binarized user's image
  * @return - vector<Coordinate> one silhouette
  */
-BlackObject retrieveSilhouette(Vector<Vector<bool> > &img, int x, int y){
+BlackObject getCollectionOfSilhouettes(Vector<Vector<bool> > &img, int x, int y){
     Vector<Coordinate> silho;
-    getSilhouette(img, x, y, silho);
+    getSingleSilhouette(img, x, y, silho);
     BlackObject res(silho);
     return res;
 }
 
 /**
- * Сollect all the objects in the image into a vector of BlackObject
- *
+ * Collect all the objects in the image into a vector of BlackObject
  * @param img - The binarized image.
  * @return - The vector of BlackObjects.
  */
@@ -119,7 +116,7 @@ Vector<BlackObject> getBlackObjects(Vector<Vector<bool> > &img) {
     for (int y = 0; y < imgHeight; y++){
         for (int x = 0; x < imgWidth; x++){
             if ((img[y][x])) {
-                BlackObject object = retrieveSilhouette(img, x, y);
+                BlackObject object = getCollectionOfSilhouettes(img, x, y);
                 result.add(object);
             }
         }
@@ -129,7 +126,7 @@ Vector<BlackObject> getBlackObjects(Vector<Vector<bool> > &img) {
 
 /**
  * Attempt to determine whether a person is.
- * @param filename - User's image file name.
+ * @param filename - User's image filename.
  * @return - true or false if we define or not define human
  */
 bool isSilhouette(BlackObject c) {
@@ -161,14 +158,13 @@ bool isSilhouette(BlackObject c) {
     }else{
         res = false;
     }
-
     return res;
 }
 
 
 /**
- * Show to user result of finding silhouette
- * @param filename - User's image file name.
+ * Show to user, result of search
+ * @param filename - User's image, filename.
  */
 void countSilhouettes(string filename) {
     int approxSilho = 0;
@@ -191,8 +187,7 @@ void countSilhouettes(string filename) {
 }
 
 /**
- * Programm calculate quantity of black objects in white background.
- * Not recognize people.
+ * Calculate quantity of black objects, on white background.
  */
 int main() {
 

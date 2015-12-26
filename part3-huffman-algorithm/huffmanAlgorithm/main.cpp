@@ -27,12 +27,7 @@ public:
     }
 };
 
-//void sortL(list<Node*> &lp){
-//    int counter = 0;
-//    while(counter != lp.size()){
-//        Node* counSwap = lp.
-//    }
-//}
+
 
 //sort list of node pointers
 struct sortList{
@@ -58,15 +53,15 @@ void print(Node *root, unsigned k = 0){
 
 vector<bool> code; //binary code of symbol
 map<char, vector<bool> > table; //char and his binary code
-
-void buildTableOfCode(Node *root){
+//create a table of code for each character
+void createTableOfEncodedCharacters(Node *root){
     if(root->left != NULL){
         code.push_back(0);
-        buildTableOfCode(root->left);
+        createTableOfEncodedCharacters(root->left);
     }
     if(root->right != NULL){
         code.push_back(1);
-        buildTableOfCode(root->right);
+        createTableOfEncodedCharacters(root->right);
     }
     if(root->c){
         table[root->c]=code;
@@ -75,7 +70,7 @@ void buildTableOfCode(Node *root){
 }
 
 //make list of pointers to Node from mapChar
-list <Node*> createListOfPointers(map<char, int> mapChar){
+list <Node*> createListOfKeyValuePair(map<char, int> mapChar){
     list <Node*> lPoin;
     map<char, int>:: iterator i;
     for(i = mapChar.begin(); i != mapChar.end(); ++i){
@@ -98,7 +93,7 @@ list <Node*> createListOfPointers(map<char, int> mapChar){
 }
 
 // make map from file map<char, int> where char is one symbol and int quantity of appearing
-map<char, int> makeMapOffile(const char* fName){
+map<char, int> makeMapOfFile(char* fName){
     char n; //to read one character
     ifstream str(fName, ios::binary);
     //create MAP for all symbols in our string and quantity of their appear
@@ -148,7 +143,7 @@ void printMap(map<char, vector<bool> > table){
 }
 
 //create vector<bool> where we save our coded message readed from file
-vector<bool>* createMessageFromFile(const char* fName){
+vector<bool>* createEncodedRepresentationOfFile(char* fName){
     vector<bool> *codedMessage = new vector<bool>();
     char d; //to read one character
     ifstream str(fName, ios::binary);
@@ -172,18 +167,18 @@ vector<bool>* createMessageFromFile(const char* fName){
     return codedMessage;
 }
 
-/*write in file our coded map - "table" and coded file, in char representation
+/**
+* write in file our coded map - "table" and coded file, in char representation
 * using one char to add the size of "table" (map)
 * next i add coded symbol (1)
-* add symbol's lenght in char(2)
+* add symbols length in char(2)
 * the third adding vector<bool> code of symbol in integer representation
 * using for this 4 bytes.
 * and do this sycle "table.size()".
 * after all i put the coded message char by char
 */
-void writeCodedFile(const char* fCode, vector<bool> *codedMessage, int sizeOfCodedMessage){
+void writeCodedFile(char* fCode, vector<bool> *codedMessage, int sizeOfCodedMessage){
     char sizeOfTableMap = table.size();
-    //cout << "Size of table code - " << (int)sizeOfTableMap << " . In char - " << char(sizeOfTableMap) << endl;
     ofstream fout("ofstreamcode.txt", ios::binary);
     char buf = 0;
     fout.put(sizeOfTableMap); // write in file size of table map<char, vector<bool>>
@@ -223,9 +218,9 @@ void writeCodedFile(const char* fCode, vector<bool> *codedMessage, int sizeOfCod
 }
 
 //decode our coded file
-void decodeFunc(const char* fCode, const char* fDecoded){
+void decryptTheEncryptedFile(char* fCode, char* fDecoded){
     ifstream s(fCode, ios::binary);
-       ofstream dec(fDecoded, ios::binary); //write decoded message
+       ofstream dec(fDecoded, ios::binary);
        char tabsize;
        s.get(tabsize);
        map<vector<bool>, char> tab;
@@ -277,25 +272,25 @@ int main()
 {
 
     //create collection - map from file
-    map<char, int> mapChar = makeMapOffile(FNAME);
+    map<char, int> mapChar = makeMapOfFile(FNAME);
 
     //make list of pointers to Node from mapChar
-    list<Node*> lPointers = createListOfPointers(mapChar);
+    list<Node*> lPointers = createListOfKeyValuePair(mapChar);
 
-    //create binary tree of Huffman and make table of code and sybols map<char, vector<bool>>
+    //create binary tree of Huffman and make table of code and symbols map<char, vector<bool>>
     createBinaryHuffmanTree(lPointers);
     Node *root = lPointers.front();
-    buildTableOfCode(root);
+    createTableOfEncodedCharacters(root);
     //    print(root,0);
 
     //create vector<bool> where we save our coded message readed from file
-    vector<bool> *codedMessage = createMessageFromFile(FNAME);
+    vector<bool> *codedMessage = createEncodedRepresentationOfFile(FNAME);
 
     //write in file our coded map - "table" and coded file, in char representation
     writeCodedFile(CODED_FILE, codedMessage, codedMessage->size());
 
     //decode our coded file
-    decodeFunc(CODED_FILE, FDECODED);
+    decryptTheEncryptedFile(CODED_FILE, FDECODED);
 
     return 0;
 }
