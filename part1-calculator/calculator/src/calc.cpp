@@ -17,8 +17,8 @@ using namespace std;
 //functions declaration
 /**
  * Implement operations between two numbers
- * @param a - First parameter
- * @param b - Second parameter
+ * @param firstParam - First parameter
+ * @param secondParam - Second parameter
  * @param symbol - The sign of operation "+-^/*"
  * @return - double result of calculation
  */
@@ -42,15 +42,6 @@ double executeOperation(double firstParam, double secondParam, char symbol){
     return res;
 }
 
-/**
- * Use when you find variables in entered formula
- * Check if letter.
- * @param ch - Char from input formula
- * @return - true its a letter
- */
-bool checkVariable(char ch){
-    return isalpha(ch);
-}
 
 /**
  * Return true if char is equals signs not alphabetic char or digit
@@ -67,15 +58,15 @@ bool isOperator(char ch){
  * @param inputFormula - User's string
  * @return - token - or its variable or its operation sign
  */
-string splitIntoTokens(int pos, string inputFormula){
+string splitIntoTokens(int pos, string inputExpression){
     string res;
-    if (isOperator(inputFormula[pos])){
-        res = inputFormula[pos];
+    if (isOperator(inputExpression[pos])){
+        res = inputExpression[pos];
     }else {
-        while (!isOperator(inputFormula[pos])) {
-            res += inputFormula[pos];
+        while (!isOperator(inputExpression[pos])){
+            res += inputExpression[pos];
             pos++;
-            if(pos == inputFormula.length()){
+            if(pos == inputExpression.length()){
                 break;
             }
         }
@@ -88,7 +79,7 @@ string splitIntoTokens(int pos, string inputFormula){
  * @param ch - Operator sign
  * @return - Priority of operator
  */
-int setPriority(char ch){
+int getPriority(char ch){
     int res;
     if(ch == '+' ||ch == '-'){
         res = 0;
@@ -108,13 +99,13 @@ int setPriority(char ch){
 /**
  * Retrieving end result. Calculating elements of queue
  * @param postFixNotat - Queue of operators and operands in postfix notation
- * @return - Result of user's input formula
+ * @return - Result of user's expression
  */
-double calculateResult(Queue<string> postFixNotat){
+double processingQueueOfPostfixNotation(Queue<string> postfixNotat){
     double res;
     Vector<string> vec;
-    while(!postFixNotat.isEmpty()){
-        vec.add(postFixNotat.dequeue());
+    while(!postfixNotat.isEmpty()){
+        vec.add(postfixNotat.dequeue());
     }
     for(int i = 0; i < vec.size(); i++){
         if(vec.size() == 1){
@@ -139,24 +130,30 @@ double calculateResult(Queue<string> postFixNotat){
  * Replace string of user input.
  * If we have one variable appearing two or more times - function
  * replace this variable automatically.
- * @param a - String - user's formula
+ * @param inputExpression - String - user's formula
+ * @param variablesMap - Collection of variables
+ * @return - True - all variables are replaced and we can continue calculate
  */
-void determiningVariables(string &inputFormula){
-    Map<char, string> variables;
-    for(int i = 0; i < inputFormula.length(); i++){ //if we have variables - ask user to enter a number and replace string
-        char ch = inputFormula[i];
-        if(checkVariable(ch)){
-            if(variables.containsKey(ch)){
-                inputFormula.replace(i,1,variables.get(ch));
+bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &variablesMap){
+    bool passCondition = true;
+    string key;
+    for(int i = 0; i < inputExpression.length(); i++){ //if we have variables - ask user to enter a number and replace string
+        if(isalpha(inputExpression[i])){
+            while(isalpha(inputExpression[i])){
+                key += inputExpression[i];
+                i++;
+            }
+            if(variablesMap.containsKey(key)){
+                int kLen = key.length();
+                inputExpression.replace(i-kLen, kLen, variablesMap[key]);
+                /*cout << "EXP " << inputExpression << endl;*/
             }else{
-                cout << inputFormula << endl; //print string
-                cout << "Enter " << ch;
-                string repl = getLine(" - variable:");
-                inputFormula.replace(i,1,repl);
-                variables.add(ch, repl);
+                passCondition = false;
+                cout << "In input expression, was not find this variable!" << endl;
             }
         }
     }
+    return passCondition;
 }
 /**
  * If token is operator. Compare current token with top sign
@@ -166,11 +163,11 @@ void determiningVariables(string &inputFormula){
  * @param postFixNotat - Queue. Postfix notation of formula
  * @param token - Token for user's string
  */
-void moveOperator(myStack<string>& operandStack, Queue<string>& postfixNotation, string token){
+void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& postfixNotation, string token){
     if(operandStack.isEmpty()){ //if stack is empty then we add first sign to stack
         operandStack.push(token);
     }else if(!operandStack.isEmpty()){
-        if(setPriority(token[0])/* op1 */ <= setPriority((operandStack.peek())[0])/* op2 */){
+        if(getPriority(token[0])/* op1 */ <= getPriority((operandStack.peek())[0])/* op2 */){
             //compare current token with top sign in stack if sign in stack have bigger priority than put him in //queue, and token put in stack
             string z = operandStack.pop();
             if(z != "("){
@@ -186,7 +183,7 @@ void moveOperator(myStack<string>& operandStack, Queue<string>& postfixNotation,
                 if(!isOperator(postfixNotation.back()[0])){
                     string firstOperand = operandStack.pop();
                     string secondOperand = operandStack.pop();
-                    if(setPriority(firstOperand[0]) <= setPriority(secondOperand[0])){
+                    if(getPriority(firstOperand[0]) <= getPriority(secondOperand[0])){
                         if(secondOperand != "(" & firstOperand != "("){
                             postfixNotation.enqueue(secondOperand);
                             operandStack.push(firstOperand);
@@ -208,58 +205,60 @@ void moveOperator(myStack<string>& operandStack, Queue<string>& postfixNotation,
 /**
  * On input we have a string that user's write
  * This function show to user - result
- * @param inputFormula - string of user's input
+ * @param inputExpression - string of user's input
+ * @param variablesMap - Collection of variables
  */
-void displayResult(string &inputFormula){
-    determiningVariables(inputFormula);
-    myStack<string> operandStack;
-    Queue<string> postfixNotation;
-    for(int pos = 0; pos < inputFormula.length(); pos++){
-        string token;
-        token = splitIntoTokens(pos, inputFormula);
-        int tokenLenght = token.length();
-        if(tokenLenght > 1){
-            pos += tokenLenght - 1;
-        }
-        //if token is number then add to queue
-        if(!isOperator(token[0])){
-            postfixNotation.enqueue(token);
-        }
-        if(token == "("){
-            operandStack.push(token);//add "(" to stack
-        }
-        if(token == ")"){
-            while(operandStack.peek() != "("){
-                string a = operandStack.pop();
-                postfixNotation.enqueue(a);
+void calculateResult(string &inputExpression, Map<string, string> &variablesMap){
+    if(replaceVariablesInExpression(inputExpression, variablesMap)){
+        myStack<string> operandStack;
+        Queue<string> postfixNotation;
+        for(int pos = 0; pos < inputExpression.length(); pos++){
+            string token;
+            token = splitIntoTokens(pos, inputExpression);
+            int tokenLenght = token.length();
+            if(tokenLenght > 1){
+                pos += tokenLenght - 1;
             }
-            if(operandStack.peek() == "("){
-                operandStack.pop();
+            //if token is number then add to queue
+            if(!isOperator(token[0])){
+                postfixNotation.enqueue(token);
+            }
+            if(token == "("){
+                operandStack.push(token);//add "(" to stack
+            }
+            if(token == ")"){
+                while(operandStack.peek() != "("){
+                    string a = operandStack.pop();
+                    postfixNotation.enqueue(a);
+                }
+                if(operandStack.peek() == "("){
+                    operandStack.pop();
+                }
+            }
+            //if token is operator sign "+-/*^"
+            if(isOperator(token[0]) && (token != "(" && token != ")")){
+                addOperatorToPostfixNotation(operandStack, postfixNotation, token);
             }
         }
-        //if token is operator sign "+-/*^"
-        if(isOperator(token[0]) && (token != "(" && token != ")")){
-            moveOperator(operandStack, postfixNotation, token);
+        //add last element in stack to queue
+        while(!operandStack.isEmpty()){
+            string a = operandStack.pop();
+            postfixNotation.enqueue(a);
         }
+        double endRes = processingQueueOfPostfixNotation(postfixNotation);
+        cout << "RESULT = " << endRes << endl;
     }
-    //add last element in stack to queue
-    while(!operandStack.isEmpty()){
-        string a = operandStack.pop();
-        postfixNotation.enqueue(a);
-    }
-    double endRes = calculateResult(postfixNotation);
-    cout << "RESULT = " << endRes << endl;
 }
 
 /**
  * Check if user input have right quantity of round brackets
- * @param inputFormula - string of user's input
+ * @param inputExpression - string of user's input
  */
-bool checkBrackets(string &inputFormula){
+bool checkValidBracketsInput(string &inputExpression){
     int openB = 0;
     int closeB = 0;
-    for(int i = 0; i < inputFormula.length(); i++){
-        char ch = inputFormula[i];
+    for(int i = 0; i < inputExpression.length(); i++){
+        char ch = inputExpression[i];
         if(ch == '('){
             openB++;
         }
@@ -272,14 +271,14 @@ bool checkBrackets(string &inputFormula){
 
 /**
  * Check if we don't have two operators after each other
- * @param input Formula - string of user's input
- * @return - true if we have something like that "6++7"
+ * @param inputExpression - string of user's input
+ * @return - true if we have right expression
  */
-bool checkOperators(string &inputFormula){
+bool checkValidOperatorsInput(string &inputExpression){
     bool res;
-    for(int i = 0; i < inputFormula.length(); i++){
-        char ch = inputFormula[i];
-        char ch2 = inputFormula[i+1];
+    for(int i = 0; i < inputExpression.length(); i++){
+        char ch = inputExpression[i];
+        char ch2 = inputExpression[i+1];
         if((isOperator(ch) && (ch != '(') && (ch != ')'))&&(isOperator(ch2) && (ch2 != '(') && (ch2 != ')'))){
             res = false;
             cout << "Wrong writing operators. Your formula is invalid! ";
@@ -291,18 +290,63 @@ bool checkOperators(string &inputFormula){
     return res;
 }
 
+/**
+ * Add to collection a new variable.
+ * In collection we store key-value. Key - name of variable. Value - value of variable.
+ * @param inputVariable - string of user's input
+ * @param variablesMap - place where we store variables
+ */
+void addVariableToCalculator(string inputVariable, Map<string, string> &variablesMap){
+    string key;
+    string value;
+    int cursorPossition = 0;
+    while(inputVariable[cursorPossition] != '=' && cursorPossition < inputVariable.length()){
+        if(isalpha(inputVariable[cursorPossition])){
+            key += inputVariable[cursorPossition];
+            cursorPossition++;
+        }else{
+            cout << "Your variable's name is incorrect." << endl;
+            cursorPossition = inputVariable.length();
+        }
+    }
+    cursorPossition++;
+    if(cursorPossition >= inputVariable.length()){
+        cout << "Your input is incorrect. Please try again!" << endl;
+    }else{
+        //now make value
+        while (cursorPossition < inputVariable.length()){
+            value += inputVariable[cursorPossition];
+            cursorPossition++;
+        }
+        variablesMap[key] = value;
+    }
+}
+
 
 int main(){
+    //for storing ours variables create collection map with variable as a key
+    Map<string, string> variablesMap;
     while(true){
-        cout << "This is a calculator!" << " You may use variables: \"a\" \"b\" \"c\"." << endl;
-        string inputFormula = getLine("Enter formula:");
-        if(inputFormula == "exit"){
+        cout << "Enter your variables. Example a=1" << endl;
+        string inputVariable = getLine("Enter variable:");
+        if(inputVariable == "exit"){
+            break;
+        }else{
+            addVariableToCalculator(inputVariable, variablesMap);
+        }
+    }
+    while(true){
+        cout << "This is a calculator!" << endl;
+        string inputExpression = getLine("Enter formula:");
+        if(inputExpression == "exit"){
             break;
         }
-        if(checkBrackets(inputFormula) && checkOperators(inputFormula)){
-            displayResult(inputFormula);
+        if(checkValidBracketsInput(inputExpression) && checkValidOperatorsInput(inputExpression)){
+            calculateResult(inputExpression, variablesMap);
         }else{
-            checkBrackets(inputFormula) == false ? cout << "Your brackets is invalid!" << endl : cout << "" << endl; ;
+            if(checkValidBracketsInput(inputExpression) == false){
+                cout << "Your brackets is invalid!" << endl;
+            }
         }
     }
     return 0;
