@@ -56,7 +56,7 @@ Vector<Vector<bool> > createBinaryGridFromFile(string filename){
     for(int i = 0; i < imgHeight; i++){
         for(int j = 0; j < imgWidth; j++){
             int pixColor = img->getRGB(j,i);
-            if(img->getBlue(pixColor) < 128 && img->getGreen(pixColor) < 128 && img->getRed(pixColor) < 128){
+            if(img -> getBlue(pixColor) < 128 && img -> getGreen(pixColor) < 128 && img -> getRed(pixColor) < 128){
                 res[i][j] = 1;
             }
         }
@@ -74,7 +74,7 @@ Vector<Vector<bool> > createBinaryGridFromFile(string filename){
  * @param silho - The vector of the silhouette Coordinates.
  */
 void getSingleSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordinate> &silho) {
-    if((x<=img[0].size()) && (y<=img.size())){
+    if((x <= img[0].size()) && (y <= img.size())){
         if (!(img[y][x])) {
             return;
         }
@@ -83,7 +83,7 @@ void getSingleSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordi
     coord.x = x;
     coord.y = y;
     silho.add(coord);
-    if((x<=img[0].size()) && (y<=img.size())){
+    if((x <= img[0].size()) && (y <= img.size())){
         img[y][x] = 0;
     }
     getSingleSilhouette(img, x - 1, y, silho);
@@ -135,18 +135,18 @@ bool isSilhouette(BlackObject c) {
     int leftX = 2000;
     int rightX = 0;
     Vector<Coordinate> vec = c.getVec();
-    for(Coordinate CurrentCoord : vec){
-        if(CurrentCoord.x > rightX){
-            rightX = CurrentCoord.x;
+    for(Coordinate сurrentCoord : vec){
+        if(сurrentCoord.x > rightX){
+            rightX = сurrentCoord.x;
         }
-        if(CurrentCoord.x < leftX){
-            leftX = CurrentCoord.x;
+        if(сurrentCoord.x < leftX){
+            leftX = сurrentCoord.x;
         }
-        if(CurrentCoord.y > botY ){
-            botY = CurrentCoord.y;
+        if(сurrentCoord.y > botY ){
+            botY = сurrentCoord.y;
         }
-        if(CurrentCoord.y < topY ){
-            topY = CurrentCoord.y;
+        if(сurrentCoord.y < topY ){
+            topY = сurrentCoord.y;
         }
     }
     double widthOfObj = rightX - leftX;

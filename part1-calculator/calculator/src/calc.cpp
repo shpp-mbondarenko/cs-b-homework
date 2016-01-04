@@ -168,7 +168,8 @@ void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& 
         operandStack.push(token);
     }else if(!operandStack.isEmpty()){
         if(getPriority(token[0])/* op1 */ <= getPriority((operandStack.peek())[0])/* op2 */){
-            //compare current token with top sign in stack if sign in stack have bigger priority than put him in //queue, and token put in stack
+            //compare current token with top sign in stack, if sign in stack have bigger priority than put it in
+            //queue, and token put in stack
             string z = operandStack.pop();
             if(z != "("){
                 postfixNotation.enqueue(z);
