@@ -47,7 +47,7 @@ public:
  * @param filename - Name of loaded image
  * @return - Vector two dimensional comprising of 0 and 1
  */
-Vector<Vector<bool> > createBinaryGridFromFile(string filename){
+Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename){
     GBufferedImage* img = new GBufferedImage(0,0,900,900);
     img->load(filename);
     int imgWidth = img->getWidth();
@@ -97,7 +97,7 @@ void getSingleSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordi
  * @param image - Binarized user's image
  * @return - vector<Coordinate> one silhouette
  */
-BlackObject getCollectionOfSilhouettes(Vector<Vector<bool> > &img, int x, int y){
+BlackObject getSingleBlackObject(Vector<Vector<bool> > &img, int x, int y){
     Vector<Coordinate> silho;
     getSingleSilhouette(img, x, y, silho);
     BlackObject res(silho);
@@ -109,14 +109,14 @@ BlackObject getCollectionOfSilhouettes(Vector<Vector<bool> > &img, int x, int y)
  * @param img - The binarized image.
  * @return - The vector of BlackObjects.
  */
-Vector<BlackObject> getBlackObjects(Vector<Vector<bool> > &img) {
+Vector<BlackObject> getCollectionOfBlackObjects(Vector<Vector<bool> > &img) {
     int imgWidth = img[0].size();
     int imgHeight = img.size();
     Vector<BlackObject> result;
     for (int y = 0; y < imgHeight; y++){
         for (int x = 0; x < imgWidth; x++){
             if ((img[y][x])) {
-                BlackObject object = getCollectionOfSilhouettes(img, x, y);
+                BlackObject object = getSingleBlackObject(img, x, y);
                 result.add(object);
             }
         }
@@ -168,8 +168,8 @@ bool isSilhouette(BlackObject c) {
  */
 void countSilhouettes(string filename) {
     int approxSilho = 0;
-    Vector<Vector<bool> > img = createBinaryGridFromFile(filename);
-    Vector<BlackObject> objects = getBlackObjects(img);
+    Vector<Vector<bool> > img = createBinaryRepresenationOfFile(filename);
+    Vector<BlackObject> objects = getCollectionOfBlackObjects(img);
     int validObj = objects.size();
     int imgWidth = img[0].size();
     int imgHeight = img.size();
@@ -189,11 +189,28 @@ void countSilhouettes(string filename) {
 /**
  * Calculate quantity of black objects, on white background.
  */
-int main() {
-
-    countSilhouettes("action.jpg");
-    countSilhouettes("f.jpg");
-    countSilhouettes("a.png");
-    countSilhouettes("4in1.jpg");
+int main(){
+    while(true){
+        string choise;
+        cout << "Input 1 to enter your filename and 2 for standard test collection." << endl;
+        getline(cin, choise);
+        if(choise == "exit"){
+            break;
+        }
+        if(choise == "1"){
+            string fName;
+            cout << "Input filename:";
+            getline(cin, fName);
+            countSilhouettes(fName);
+        }
+        if(choise == "2"){
+            countSilhouettes("action.jpg");
+            countSilhouettes("f.jpg");
+            countSilhouettes("a.png");
+            countSilhouettes("4in1.jpg");
+        }else{
+            cout << "Input is wrong! Try again!";
+        }
+    }
     return 0;
 }

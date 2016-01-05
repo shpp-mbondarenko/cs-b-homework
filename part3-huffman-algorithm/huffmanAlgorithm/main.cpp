@@ -5,7 +5,7 @@
 #include <list>
 #include <fstream>
 
-#define FILE_NAME "2.txt"
+
 #define CODED_FILE "ofstreamcode.txt"
 #define DECODED_FILE "decoded.txt"
 
@@ -51,26 +51,25 @@ void print(Node *root, unsigned k = 0){
     }
 }
 
-vector<bool> code; //binary code of symbol
-map<char, vector<bool> > table; //char and his binary code
+
 //create a table of code for each character
-void createTableOfEncodedCharacters(Node *root){
+void createTableOfEncodedCharacters(Node *root, map<char, vector<bool> > &table, vector<bool> &code){
     if(root->left != NULL){
         code.push_back(0);
-        createTableOfEncodedCharacters(root->left);
+        createTableOfEncodedCharacters(root->left, table, code);
     }
     if(root->right != NULL){
         code.push_back(1);
-        createTableOfEncodedCharacters(root->right);
+        createTableOfEncodedCharacters(root->right, table, code);
     }
     if(root->c){
-        table[root->c]=code;
+        table[root->c] = code;
     }
     code.pop_back(); //delete one symbol and come back to parent node and work further
 }
 
 //make list of pointers to Node from mapChar
-list <Node*> createListOfNodes(map<char, int> mapChar){
+list <Node*> createListOfNodesContainLlettersAndFrequency(map<char, int> mapChar){
     list <Node*> lPoin;
     map<char, int>:: iterator i;
     for(i = mapChar.begin(); i != mapChar.end(); ++i){
@@ -143,10 +142,10 @@ void printMap(map<char, vector<bool> > table){
 }
 
 //create vector<bool> where we save our coded message readed from file
-vector<bool>* createEncodedRepresentationOfFile(char* fName){
+vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<bool> > &table){
     vector<bool> *codedMessage = new vector<bool>();
     char d; //to read one character
-    ifstream str(fName, ios::binary);
+    ifstream str(fName.c_str(), ios::binary);
     while (str.get(d)) {
         vector<bool> tmp = table[d];
         for(int i = 0; i < tmp.size(); i++){
@@ -177,9 +176,9 @@ vector<bool>* createEncodedRepresentationOfFile(char* fName){
 * and do this sycle "table.size()".
 * after all i put the coded message char by char
 */
-void writeInDocumentCompressedFile(char* fCode){
+void writeInDocumentCompressedFile(char* fCode, string fName, map<char, vector<bool> > table){
     //create vector<bool> where we save our coded message readed from file
-    vector<bool> *codedMessage = createEncodedRepresentationOfFile(FILE_NAME);
+    vector<bool> *codedMessage = createEncodedRepresentationOfFile(fName, table);
     int sizeOfCodedMessage = codedMessage->size();
     char sizeOfTableMap = table.size();
     ofstream fout(CODED_FILE, ios::binary);
@@ -209,7 +208,7 @@ void writeInDocumentCompressedFile(char* fCode){
     //writing in file coded message
     int count = 0; buf = 0;
     for(int i = 0; i < codedMessage->size(); i++){
-        buf = buf | (codedMessage->at(i)) <<(7 - count);
+        buf = buf | (codedMessage->at(i)) << (7 - count);
         count++;
         if(count == 8){
             count = 0;
@@ -221,9 +220,9 @@ void writeInDocumentCompressedFile(char* fCode){
 }
 
 //decode our coded file
-void decryptCompressedFile(string fCode, char* fDecoded){
+void decryptCompressedFile(string fCode, string fDecoded){
     ifstream s(fCode.c_str(), ios::binary);
-    ofstream dec(fDecoded, ios::binary);
+    ofstream dec(fDecoded.c_str(), ios::binary);
     char tabsize;
     s.get(tabsize);
     map<vector<bool>, char> tab;
@@ -270,39 +269,57 @@ void decryptCompressedFile(string fCode, char* fDecoded){
     s.close();
     dec.close();
 }
+/**
+* Compressing file
+* @param fName - file compress to
+*/
+void compressFile(string fName){
+    //create collection - map from file
+    map<char, int> mapChar = createMapOfCharacterFrequencyOccurrence(fName);
+
+    //make list of pointers to Node
+    //in one Node we store symbol and his frequency
+    list<Node*> listOfCharacterFrequencies = createListOfNodesContainLlettersAndFrequency(mapChar);
+
+    vector<bool> code; //binary code of symbol
+    map<char, vector<bool> > table; //char and his binary code
+    //create binary tree of Huffman and make table of code and symbols map<char, vector<bool>>
+    createBinaryHuffmanTree(listOfCharacterFrequencies);
+    Node *root = listOfCharacterFrequencies.front();
+    createTableOfEncodedCharacters(root, table, code);
+    //    print(root,0);
+
+    //write in file our coded map - "table" and coded file, in char representation
+    writeInDocumentCompressedFile(CODED_FILE, fName, table);
+    cout << "File compressed!";
+}
 
 int main()
 {
-    cout << "What we shall do? Input 1 for compress file. Input 2 for decrypt file." << endl;
-    string task;
-    getline(cin, task);
-    if(task == "1"){
-        string fName;
-        cout << "Enter filename:";
-        getline(cin, fName);
-        //create collection - map from file
-        map<char, int> mapChar = createMapOfCharacterFrequencyOccurrence(fName);
-
-        //make list of pointers to Node
-        //in one Node we store symbol and his frequency
-        list<Node*> listOfCharacterFrequencies = createListOfNodes(mapChar);
-
-        //create binary tree of Huffman and make table of code and symbols map<char, vector<bool>>
-        createBinaryHuffmanTree(listOfCharacterFrequencies);
-        Node *root = listOfCharacterFrequencies.front();
-        createTableOfEncodedCharacters(root);
-        //    print(root,0);
-
-        //write in file our coded map - "table" and coded file, in char representation
-        writeInDocumentCompressedFile(CODED_FILE);
-        cout << "file compressed!";
+    while(true){
+        cout << "What we shall do? Input 1 for compress file. Input 2 for decrypt file." << endl;
+        string task;
+        getline(cin, task);
+        if(task == "exit"){
+            break;
+        }
+        if(task != "1" && task != "2"){
+            cout << "Program, don't know what to do! Please try again!" << endl;
+        }
+        if(task == "1"){
+            string fName;
+            cout << "Enter filename:";
+            getline(cin, fName);
+            compressFile(fName);
+        }
+        if(task == "2"){
+            string fName;
+            cout << "Enter filename to decode:";
+            getline(cin, fName);
+            //decode our coded file
+            decryptCompressedFile(fName, DECODED_FILE);
+        }
     }
-    if(task == "2"){
-        string fName;
-        cout << "Enter filename to decode:";
-        getline(cin, fName);
-        //decode our coded file
-        decryptCompressedFile(fName, DECODED_FILE);
-    }
+
     return 0;
 }
