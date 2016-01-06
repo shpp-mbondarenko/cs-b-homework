@@ -4,25 +4,33 @@ using namespace std;
 
 int main()
 {
+    //tests
+
+    //create BSTree. Delete from empty tree
     BSTree<int,int> a;
-    a.insert(33, 4);
+    cout << "Delete element from empty tree." << endl;
+    a.remove(4);
+
+    //Try to find something in empty tree
+    cout << "Find element in empty tree." << endl;
+    a.find(5);
+
+    //add few elements in tree and print it
     a.insert(22, 5);
+    a.insert(33, 4);
     a.insert(43, 2);
     a.insert(43, 1);
     a.insert(11, 3);
     a.insert(15, 6);
     a.insert(15, 8);
-    a.insert(15, 7);
-    a.insert(15, 10);
-    a.insert(15, 14);
-    a.insert(15, 15);
-    a.insert(15, 16);
-    a.insert(15, 17);
-    a.remove(6);
-
+    a.print();
+    //delete top element 4
+    cout << "Delete element 4." << endl;
+    a.remove(4);
     a.print();
 
-    cout << "find 11 = " << a.find(3) <<endl;
+    cout << "Find element with key 5." << endl;
+    cout << a.find(5) << endl;
 
     return 0;
 }

@@ -55,6 +55,7 @@ private:
     /* Deleting ode with key "k" */
     Node* removeNode(Node* n, K k) {
         if (n == NULL) {
+            cout << "You can't delete node from empty tree!" << endl;
             return NULL;}
         if (k < n->key) {                    // if "k" les than current key go to left sub-tree and do removeNode
             n->left = removeNode(n->left, k);
@@ -128,8 +129,10 @@ private:
 
     /* Find key in tree */
     Node* findNode(Node* t, K key) {
-        if (t == NULL)
+        if (t == NULL){
+            cout << "You trying to look in empty tree. Please add elements, first." << endl;
             return NULL;
+        }
         if (key == t->key)
             return t;
         if (key < t->key) {
@@ -197,7 +200,11 @@ public:
     //return value from node
     T find(K key){
         Node* tmp = findNode(root, key);
-        return tmp->val;
+        if(tmp == NULL){
+            return NULL;
+        }else{
+            return tmp->val;
+        }
     }
 };
 
