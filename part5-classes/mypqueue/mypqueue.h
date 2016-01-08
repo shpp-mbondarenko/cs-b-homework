@@ -56,9 +56,10 @@ public:
     T back() {
         if (empty()){
             std::cerr << "Error! Try back() from empty list." << std::endl;
-            exit(EXIT_FAILURE);
+//            exit(EXIT_FAILURE);
+        }else{
+            return lastElem->value;
         }
-        return lastElem->value;
     }
 
     //add to end of list
@@ -100,19 +101,20 @@ public:
     //delete first element in list
     void pop() {
         if (empty()) {
-            std::cerr << "Error! Empty list." << std::endl;
-            exit(EXIT_FAILURE);
+            std::cerr << "Error! Empty queue." << std::endl;
+            //            exit(EXIT_FAILURE);
+        }else{
+            Node* removedNode = firstElem;
+            if (size() > 1) {
+                firstElem = removedNode->next;
+                firstElem->prev = 0;
+            } else {
+                firstElem = 0;
+                lastElem = 0;
+            }
+            delete removedNode;
+            counter--;
         }
-        Node* removedNode = firstElem;
-        if (size() > 1) {
-            firstElem = removedNode->next;
-            firstElem->prev = 0;
-        } else {
-            firstElem = 0;
-            lastElem = 0;
-        }
-        delete removedNode;
-        counter--;
     }
 
 

@@ -4,15 +4,23 @@ using namespace std;
 
 int main()
 {
+    //tests
+    //create and pop from empty stack
     Stack<int> st;
-
-    st.push(1);    /*st.push(2);    st.push(3);    st.push(4);
-    st.push(1);    st.push(2);    st.push(3);    st.push(4);    st.push(45);*/
-
-    cout << st.top() << endl;
     st.pop();
- st.pop();
+
+    //get element from empty stack
+    st.top();
+
+    //add elements
+    st.push(1);    st.push(2);    st.push(3);    st.push(8);
+
+    //get top element
+    cout << st.top() << endl;
+
+    //get size of stack
     cout << st.size() <<endl;
+    //print stack
     st.toString();
 
 

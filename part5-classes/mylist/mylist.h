@@ -55,7 +55,7 @@ public:
             return res->value;
         }else{
             std::cerr << "Error! Try get too hight index list (element not exist)." << std::endl;
-            exit(EXIT_FAILURE);
+            return NULL;
         }
     }
 
@@ -73,42 +73,43 @@ public:
     T front() {
         if (empty()) {
             std::cerr << "Error! Try front() from empty list." << std::endl;
-            exit(EXIT_FAILURE);
+            //            exit(EXIT_FAILURE);
+        }else{
+            return head->value;
         }
-        return head->value;
     }
 
     //return last element of list
     T back() {
         if (empty()){
             std::cerr << "Error! Try back() from empty list." << std::endl;
-            exit(EXIT_FAILURE);
+            //            exit(EXIT_FAILURE);
+        }else{
+            return tail->value;
         }
-        return tail->value;
     }
 
-//insert nodein middle
+    //insert node in middle
     void insert(T val, int n = 0) {
         if(n >= counter){
             push_back(val);
-        }
-         if(n == 0){
-            push_front(val);
         }else{
-             Node* t = new Node(val);
-             int c = 0;
-             Node* tmp = head;
-             while(c < n){
-                 tmp = tmp->next;
-                 c++;
-             }
-             t->prew = tmp->prew;
-             t->next = tmp;
-             tmp->prew = t;
-             std::cout << "dada" << std::endl;
-             delete t, tmp;
-         }
+            if(n == 0){
+                push_front(val);
+            }else{
+                Node* t = new Node(val);
+                int c = 0;
+                Node* tmp = head;
+                while(c < n){
+                    tmp = tmp->next;
+                    c++;
+                }
+                t->prew = tmp->prew;
+                t->next = tmp;
+                tmp->prew = t;
 
+            }
+        }
 
     }
 
@@ -124,7 +125,6 @@ public:
             head = newNode;
         }
         counter++;
-          delete newNode;
     }
 
     //add to end of list
@@ -144,37 +144,39 @@ public:
     //delete first element in list
     void pop_front() {
         if (empty()) {
-            std::cerr << "Error! Empty list." << std::endl;
-            exit(EXIT_FAILURE);
+            std::cerr << "Try to pop_front. Error! Empty list." << std::endl;
+            //            exit(EXIT_FAILURE);
+        }else{
+            Node* removedNode = head;
+            if (size() > 1) {
+                head = removedNode->next;
+                head->prew = 0;
+            } else {
+                head = 0;
+                tail = 0;
+            }
+            delete removedNode;
+            counter--;
         }
-        Node* removedNode = head;
-        if (size() > 1) {
-            head = removedNode->next;
-            head->prew = 0;
-        } else {
-            head = 0;
-            tail = 0;
-        }
-        delete removedNode;
-        counter--;
     }
 
     //delete element from tail
     void pop_back() {
         if (empty()) {
-            std::cerr << "Error! Empty list." << std::endl;
-            exit(EXIT_FAILURE);
+            std::cerr << "Try to pop_back. Error! Empty list." << std::endl;
+            //            exit(EXIT_FAILURE);
+        }else{
+            Node* removedNode = tail;
+            if (size() > 1) {
+                tail = removedNode->prew;
+                tail->next = 0;
+            } else {
+                tail = 0;
+                head = 0;
+            }
+            delete removedNode;
+            counter--;
         }
-        Node* removedNode = tail;
-        if (size() > 1) {
-            tail = removedNode->prew;
-            tail->next = 0;
-        } else {
-            tail = 0;
-            head = 0;
-        }
-        delete removedNode;
-        counter--;
     }
 
     void clear() {

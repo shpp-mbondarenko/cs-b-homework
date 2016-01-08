@@ -55,15 +55,19 @@ public:
     }
     // returns top element of stack
     T top() {
+        if(stSize != 0){
         return stData[stSize-1];
+        }else{
+            std::cout << "You are trying to get not exist value! Empty stack!" << std::endl;
+        }
     }
     // removes element from stack
     void pop() {
         if(stSize != 0){
             stSize--;
         }else{
-            std::cout << "You are trying to delete not exist value! Program will close!" << std::endl;
-            exit (EXIT_FAILURE);
+            std::cout << "You are trying to delete not exist value!" << std::endl;
+//            exit (EXIT_FAILURE);
         }
     }
 

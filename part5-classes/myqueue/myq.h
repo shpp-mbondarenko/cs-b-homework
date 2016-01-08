@@ -29,6 +29,7 @@ public:
         counter = 0;
     }
     ~Queue(){}
+
     //add value to Queue
     void push (T val){
         Node* tmp = new Node(val);
@@ -41,11 +42,17 @@ public:
         }
         counter++;
     }
+
     //return value of first element
     T front(){
-        return firstElem->value;
+          if(!empty()){
+            return  firstElem->value;
+        }else{
+            std::cout << "You are trying to get element that not exists! Empty queue!" << std::endl;
+        }
     }
-    //delete first elem
+
+    //delete first elemement
     T pop(){
         if(!empty()){
             Node* tmp = firstElem;
@@ -53,14 +60,19 @@ public:
             delete tmp;
             counter--;
         }else{
-            std::cout << "You are trying to delete not exist file! Program will close!" << std::endl;
-            exit (EXIT_FAILURE);
+            std::cout << "You are trying to delete not exist element! Empty queue!" << std::endl;
         }
     }
-    //return value of last elem os Queue
+
+    //return value of last element of Queue
     T back(){
-        return  lastElem->value;
+        if(!empty()){
+            return  lastElem->value;
+        }else{
+            std::cout << "You are trying to get element that not exists! Empty queue!" << std::endl;
+        }
     }
+
     //size of Queue
     int size(){
         return counter;
@@ -69,12 +81,15 @@ public:
     void clear(){
         firstElem = 0;
         lastElem = 0;
+        counter = 0;
     }
+
     //return true if Queue is empty
     bool empty(){
         return counter == 0;
     }
-//print Queue
+
+    //print Queue
     void toString(){
         if(!empty()){
             cout <<"{ ";

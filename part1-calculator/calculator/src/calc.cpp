@@ -44,7 +44,7 @@ double executeOperation(double firstParam, double secondParam, char symbol){
 
 
 /**
- * Return true if char is equals signs not alphabetic char or digit
+ * Return true if char is equals arithmetic signs, not alphabetic char or digit
  * @param ch - Char from input formula
  * @return - true if it is operation sign
  */
@@ -288,6 +288,9 @@ bool checkValidOperatorsInput(string &inputExpression){
             res = true;
         }
     }
+    if(isOperator(inputExpression[(inputExpression.length())-1])){
+        res = false;
+    }
     return res;
 }
 
@@ -336,6 +339,7 @@ int main(){
             addVariableToCalculator(inputVariable, variablesMap);
         }
     }
+
     while(true){
         cout << "This is a calculator!" << endl;
         string inputExpression = getLine("Enter formula:");

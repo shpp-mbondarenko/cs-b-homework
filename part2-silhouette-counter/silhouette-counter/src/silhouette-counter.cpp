@@ -52,10 +52,10 @@ Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename){
     img->load(filename);
     int imgWidth = img->getWidth();
     int imgHeight = img->getHeight();
-    Vector<Vector<bool> > res(imgHeight, Vector<bool>(imgWidth,0));
+    Vector<Vector<bool> > res(imgHeight, Vector<bool>(imgWidth, 0));
     for(int i = 0; i < imgHeight; i++){
         for(int j = 0; j < imgWidth; j++){
-            int pixColor = img->getRGB(j,i);
+            int pixColor = img->getRGB(j, i);
             if(img -> getBlue(pixColor) < 128 && img -> getGreen(pixColor) < 128 && img -> getRed(pixColor) < 128){
                 res[i][j] = 1;
             }
@@ -142,18 +142,18 @@ bool isSilhouette(BlackObject c) {
         if(сurrentCoord.x < leftX){
             leftX = сurrentCoord.x;
         }
-        if(сurrentCoord.y > botY ){
+        if(сurrentCoord.y > botY){
             botY = сurrentCoord.y;
         }
-        if(сurrentCoord.y < topY ){
+        if(сurrentCoord.y < topY){
             topY = сurrentCoord.y;
         }
     }
     double widthOfObj = rightX - leftX;
     double heightOfMan = botY - topY;
-    double uniqueMeasurer = heightOfMan/8;
+    double uniqueMeasurer = heightOfMan / 8;
     bool res;
-    if((widthOfObj/uniqueMeasurer) < (5.5) && (widthOfObj/uniqueMeasurer) > (1.5)){
+    if((widthOfObj / uniqueMeasurer) < (5.5) && (widthOfObj / uniqueMeasurer) > (1.5)){
         res = true;
     }else{
         res = false;
@@ -173,12 +173,12 @@ void countSilhouettes(string filename) {
     int validObj = objects.size();
     int imgWidth = img[0].size();
     int imgHeight = img.size();
-    int imgSize = imgWidth*imgHeight;
+    int imgSize = imgWidth * imgHeight;
     for(BlackObject c : objects){
         if(isSilhouette(c)){
             approxSilho++;
         }
-        if((c.getVec().size()) < (imgSize/1000)){
+        if((c.getVec().size()) < (imgSize / 1000)){
             validObj--;
         }
     }
