@@ -51,12 +51,13 @@ double executeOperation(double firstParam, double secondParam, char symbol){
 bool isOperator(char ch){
     return (ch == '+' || ch == '-' || ch == '/' || ch == '*' || ch == '^');
 }
+
 /**
  * Make token from string using current position of "cursor"
  * Send the current cursor position, and the line from which we select token
  * @param pos - Position of cursor in string
  * @param inputFormula - User's string
- * @return - token - or its variable or its operation sign
+ * @return - token - or its variable, or its operation sign
  */
 string splitIntoTokens(int pos, string inputExpression){
     string res;
@@ -81,7 +82,7 @@ string splitIntoTokens(int pos, string inputExpression){
  */
 int getPriority(char ch){
     int res;
-    if(ch == '+' ||ch == '-'){
+    if(ch == '+' || ch == '-'){
         res = 0;
     }
     if(ch == '*' || ch == '/'){
@@ -98,7 +99,7 @@ int getPriority(char ch){
 
 /**
  * Retrieving end result. Calculating elements of queue
- * @param postFixNotat - Queue of operators and operands in postfix notation
+ * @param postfixNotat - Queue of operators and operands in postfix notation
  * @return - Result of user's expression
  */
 double processingQueueOfPostfixNotation(Queue<string> postfixNotat){
@@ -160,7 +161,7 @@ bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &
  * in stack, if sign in stack have bigger priority then put him in
  * queue, and token put in stack
  * @param operandStack - Stack of operators
- * @param postFixNotat - Queue. Postfix notation of formula
+ * @param postfixNotat - Queue. Postfix notation of formula
  * @param token - Token for user's string
  */
 void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& postfixNotation, string token){
@@ -285,7 +286,7 @@ bool checkValidOperatorsInput(string &inputExpression){
         char ch2 = inputExpression[i+1];
         if((isOperator(ch) && (ch != '(') && (ch != ')'))&&(isOperator(ch2) && (ch2 != '(') && (ch2 != ')'))){
             res = false;
-            cout << "Wrong writing operators. Your formula is invalid! ";
+            cout << "Wrong writing operator's. Your formula is invalid! ";
             break;
         }else{
             res = true;
@@ -332,14 +333,14 @@ void addVariableToCalculator(string inputVariable, Map<string, string> &variable
 
 int main(){
     //for storing ours variables create collection map with variable as a key
-    Map<string, string> variablesMap;
+    Map<string, string> variablesContainer;
     while(true){
         cout << "Enter your variables. Example a=1" << endl;
         string inputVariable = getLine("Enter variable:");
         if(inputVariable == "exit"){
             break;
         }else{
-            addVariableToCalculator(inputVariable, variablesMap);
+            addVariableToCalculator(inputVariable, variablesContainer);
         }
     }
 
@@ -350,7 +351,7 @@ int main(){
             break;
         }
         if(checkValidBracketsInput(inputExpression) && checkValidOperatorsInput(inputExpression)){
-            calculateResult(inputExpression, variablesMap);
+            calculateResult(inputExpression, variablesContainer);
         }
     }
     return 0;

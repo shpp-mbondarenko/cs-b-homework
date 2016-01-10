@@ -11,13 +11,13 @@ class Stack{
 private:
     T *stData;
     int maxSize;
-    int stSize;
+    int curSize;
 
-    // increase vector's capacity twice and dublicate data to a new storage
+    // increase vector's capacity twice and duplicate data to a new storage
     void enhance() {
         maxSize *= 2;
         T *newData = new T[maxSize];
-        for (int i = 0; i < stSize; i++)
+        for (int i = 0; i < curSize; i++)
             newData[i] = stData[i];
         T *tmp = stData;
         stData = newData;
@@ -28,20 +28,20 @@ private:
      * @return - true if stSize >= maxSize
      */
 
-    bool  notExceed() { return stSize >= maxSize; }
+    bool  notExceed() { return curSize >= maxSize; }
 
 public:
     //constructor
     Stack(){
         maxSize = INI_STACK_SIZE;
         stData = new T[maxSize];
-        stSize = 0;
+        curSize = 0;
     }
     ~Stack(){}
 
     // return stack size
     int size() const {
-        return stSize;
+        return curSize;
     }
 
     // adds an element to the stack
@@ -49,22 +49,22 @@ public:
         if (notExceed()){
             enhance();
         }
-        stData[stSize] = value;
-        stSize++;
+        stData[curSize] = value;
+        curSize++;
 
     }
     // returns top element of stack
     T top() {
-        if(stSize != 0){
-        return stData[stSize-1];
+        if(curSize != 0){
+        return stData[curSize-1];
         }else{
             std::cout << "You are trying to get not exist value! Empty stack!" << std::endl;
         }
     }
     // removes element from stack
     void pop() {
-        if(stSize != 0){
-            stSize--;
+        if(curSize != 0){
+            curSize--;
         }else{
             std::cout << "You are trying to delete not exist value!" << std::endl;
 //            exit (EXIT_FAILURE);
@@ -74,9 +74,9 @@ public:
     //print stack
     void toString(){
         cout << "{ ";
-        for(int i = 0; i < stSize; i++){
+        for(int i = 0; i < curSize; i++){
             cout << stData[i];
-            if(i != stSize-1){
+            if(i != curSize-1){
                 cout <<", ";
             }
         }
@@ -85,7 +85,7 @@ public:
 
     //return true if stack is empty
     bool isEmpty(){
-        return stSize == 0;
+        return curSize == 0;
     }
 };
 

@@ -46,9 +46,9 @@ private:
 
     /* fixing height of root node */
     void fixHeight(Node* n){
-        int hl = findHeight(n->left);               // Getting height of left sub-tree
-        int hr = findHeight(n->right);              // Getting height of right sub-tree
-        n->height = ((hl > hr) ? hl : hr) + 1;      // root height is longest height of sub-tree +1
+        int hl = findHeight(n->left);               // Getting height of left subtree
+        int hr = findHeight(n->right);              // Getting height of right subtree
+        n->height = ((hl > hr) ? hl : hr) + 1;      // root height is longest height of subtree +1
     }
 
 
@@ -58,12 +58,12 @@ private:
             cout << "You can't delete node from empty tree!" << endl;
             return NULL;
         }
-        if (k < n->key){                    // if "k" les than current key go to left sub-tree and do removeNode
+        if (k < n->key){                    // if "k" less than current key go to left subtree and do removeNode
             n->left = removeNode(n->left, k);
         }else if (k > n->key) {
             n->right = removeNode(n->right, k);
         }else{                             // if "k" = key
-            Node* l = n->left;                   // save left sub-tree of current node
+            Node* l = n->left;                   // save left subtree of current node
             Node* r = n->right;                  // and save right sub-tree
             delete n;                            // Delete n Node
             if (r == NULL){                       // if right is null return left

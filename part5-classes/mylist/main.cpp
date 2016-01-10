@@ -28,9 +28,9 @@ int main()
     li->insert('z', 1);
 
     //test square brackets
-    cout << "square breckets - " << (*li)[4] << endl;
-    cout << "square breckets - " << (*li)[1] << endl;
-    cout << "square breckets - " << (*li)[9] << endl;
+    cout << "square brackets - " << (*li)[4] << endl;
+    cout << "square brackets - " << (*li)[1] << endl;
+    cout << "square brackets - " << (*li)[9] << endl;
 
     //clear list
     li->clear();

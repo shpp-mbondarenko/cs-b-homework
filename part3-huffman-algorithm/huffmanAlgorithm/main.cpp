@@ -17,7 +17,7 @@ public:
     char c;     //our symbol char
     Node *left, *right;
 
-    Node() {}
+    Node(){}
 
     Node(Node *L, Node *R){
         left = L;
@@ -97,8 +97,8 @@ map<char, int> createMapOfCharacterFrequencyOccurrence(string fName){
     ifstream str(fName.c_str(), ios::binary);
     //create MAP for all symbols in our string and quantity of their appear
     map<char, int> mapChar;
-    //go throught string. Count elements(char)
-    while (str.get(n)) {
+    //go through string. Count elements(char)
+    while (str.get(n)){
         mapChar[n]++;
     }
     str.close();
@@ -111,18 +111,18 @@ map<char, int> createMapOfCharacterFrequencyOccurrence(string fName){
 }
 
 //create binary tree of Huffman
-void createBinaryHuffmanTree(list <Node*> &lPointers){
-    while (lPointers.size() != 1) {
-        lPointers.sort(sortList()); //sorting list
+void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes){
+    while (ListOfPointersToNodes.size() != 1){
+        ListOfPointersToNodes.sort(sortList()); //sorting list
 
         //peek and pop smalest two elements in list
-        Node *sonL = lPointers.front();
-        lPointers.pop_front();
-        Node *sonR = lPointers.front();
-        lPointers.pop_front();
+        Node *sonL = ListOfPointersToNodes.front();
+        ListOfPointersToNodes.pop_front();
+        Node *sonR = ListOfPointersToNodes.front();
+        ListOfPointersToNodes.pop_front();
 
         Node *parent = new Node (sonL,sonR);
-        lPointers.push_back(parent);
+        ListOfPointersToNodes.push_back(parent);
     }
 }
 
@@ -177,7 +177,7 @@ vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<b
 * add symbols length in char(2)
 * the third adding vector<bool> code of symbol in integer representation
 * using for this 4 bytes.
-* and do this sycle "table.size()".
+* and do this cycle "table.size()".
 * after all i put the coded message char by char
 * @param codedFile - file, where we write compressed file
 * @param fName - file compress to
@@ -232,18 +232,18 @@ void writeInDocumentCompressedFile(string codedFile, string fName, map<char, vec
 * @param fDecoded - file, where we write decoded file
 */
 void decryptCompressedFile(string fCoded, string fDecoded){
-    ifstream s(fCoded.c_str(), ios::binary);
+    ifstream stream(fCoded.c_str(), ios::binary);
     ofstream dec(fDecoded.c_str(), ios::binary);
     char tabsize;
-    s.get(tabsize);
+    stream.get(tabsize);
     map<vector<bool>, char> tab;
     for(int i = 0; i < tabsize; i++){
         char value;
-        s.get(value);
+        stream.get(value);
         char len;
-        s.get(len);
+        stream.get(len);
         int num = 0;
-        s.read((char*)& num, sizeof(int));
+        stream.read((char*)& num, sizeof(int));
         vector<bool> keyCode;
         num = num << (sizeof(num) * 8 - len);
         for(char u = 0; u < len; u++){
@@ -252,32 +252,32 @@ void decryptCompressedFile(string fCoded, string fDecoded){
         }
         tab[keyCode] = value;
     }
-    int smessage = 0;
-    s.read((char*)& smessage, sizeof(smessage));
-    vector<bool> cCodeMessage; //all text in one vector
+    int sizeOfMessage = 0;
+    stream.read((char*)& sizeOfMessage, sizeof(sizeOfMessage));
+    vector<bool> codeMessage; //all text in one vector
     int counter = 0;
     int counterForByte = 0;
-    while(!s.eof()){
+    while(!stream.eof()){
         char ch = 0;
-        s.get(ch);
+        stream.get(ch);
         while(counterForByte != 8){
-            cCodeMessage.push_back(ch < 0);
+            codeMessage.push_back(ch < 0);
             ch = ch << 1;
             counterForByte++;
         }
         counterForByte = 0;
         counter = counter + 8;
     }
-    vector<bool> ress;
-    for(int i = 0; i<(cCodeMessage.size()-(cCodeMessage.size()- smessage)); i++){
-        ress.push_back(cCodeMessage[i]);
-        if(tab[ress]){
-            dec << tab[ress];
-            ress.clear();
+    vector<bool> res;
+    for(int i = 0; i<(codeMessage.size()-(codeMessage.size()- sizeOfMessage)); i++){
+        res.push_back(codeMessage[i]);
+        if(tab[res]){
+            dec << tab[res];
+            res.clear();
         }
     }
     cout << "File decoded!" << endl;
-    s.close();
+    stream.close();
     dec.close();
 }
 /**

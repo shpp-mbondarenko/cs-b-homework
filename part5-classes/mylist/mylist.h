@@ -12,16 +12,16 @@ private:
     struct Node {
         T value;
         Node* next;
-        Node* prew;
+        Node* prev;
         Node (){
             value = 0;
             next = 0;
-            prew = 0;
+            prev = 0;
         }
         Node(T v) {
             value = v;
             next = 0;
-            prew = 0;
+            prev = 0;
         }
     };
     Node* head;
@@ -37,7 +37,7 @@ public:
     ~MyList() {
         clear();
     }
-    // overload opertor []
+    // overload operator []
     T operator[](int i){
         Node* res = new Node();
         if(i <= counter){
@@ -45,7 +45,7 @@ public:
                 if(y == 0){
                     res->value = head->value;
                     res->next = head ->next;
-                    res->prew = head -> prew;
+                    res->prev = head -> prev;
                 }
                 if(y != 0){
                     res->value = res->next->value;
@@ -54,7 +54,7 @@ public:
             }
             return res->value;
         }else{
-            std::cerr << "Error! Try get too hight index list (element not exist)." << std::endl;
+            std::cerr << "Error! Try get too high index list (element not exist)." << std::endl;
             return NULL;
         }
     }
@@ -104,9 +104,9 @@ public:
                     tmp = tmp->next;
                     c++;
                 }
-                t->prew = tmp->prew;
+                t->prev = tmp->prev;
                 t->next = tmp;
-                tmp->prew = t;
+                tmp->prev = t;
 
             }
         }
@@ -120,7 +120,7 @@ public:
             tail = newNode;
             head = newNode;
         } else {
-            head->prew = newNode;
+            head->prev = newNode;
             newNode->next = head;
             head = newNode;
         }
@@ -135,7 +135,7 @@ public:
             tail = newNode;
         } else {
             tail->next = newNode;
-            newNode->prew = tail;
+            newNode->prev = tail;
             tail = newNode;
         }
         counter++;
@@ -150,7 +150,7 @@ public:
             Node* removedNode = head;
             if (size() > 1) {
                 head = removedNode->next;
-                head->prew = 0;
+                head->prev = 0;
             } else {
                 head = 0;
                 tail = 0;
@@ -168,7 +168,7 @@ public:
         }else{
             Node* removedNode = tail;
             if (size() > 1) {
-                tail = removedNode->prew;
+                tail = removedNode->prev;
                 tail->next = 0;
             } else {
                 tail = 0;

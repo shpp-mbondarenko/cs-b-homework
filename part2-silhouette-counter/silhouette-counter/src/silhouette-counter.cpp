@@ -31,8 +31,8 @@ public:
     };
 
     /**
-     * Give accses to vector "object"
-     * @return - Vecor<Coordinate>
+     * Give access to vector "object"
+     * @return - Vector<Coordinate>
      */
     Vector<Coordinate> getVec(){
         return object;
@@ -185,19 +185,19 @@ void countSilhouettes(string filename) {
  */
 int main(){
     while(true){
-        string choise;
+        string choice;
         cout << "Input 1 to enter your filename and 2 for standard test collection." << endl;
-        getline(cin, choise);
-        if(choise == "exit"){
+        getline(cin, choice);
+        if(choice == "exit"){
             break;
         }
-        if(choise == "1"){
+        if(choice == "1"){
             string fName;
             cout << "Input filename:";
             getline(cin, fName);
             countSilhouettes(fName);
         }
-        if(choise == "2"){
+        if(choice == "2"){
             countSilhouettes("action.jpg");
             countSilhouettes("f.jpg");
             countSilhouettes("a.png");

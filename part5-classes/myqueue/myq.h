@@ -13,7 +13,7 @@ private:
         T value;
         Node * next;
         Node (){}       //empty constructor
-        Node ( T val){
+        Node (T val){
             value = val;
             next = 0;
         }
@@ -52,7 +52,7 @@ public:
         }
     }
 
-    //delete first elemement
+    //delete first element
     T pop(){
         if(!empty()){
             Node* tmp = firstElem;
@@ -64,7 +64,7 @@ public:
         }
     }
 
-    //return value of last element of Queue
+    //return last element of Queue
     T back(){
         if(!empty()){
             return  lastElem->value;
