@@ -202,7 +202,7 @@ public:
 
     //print BST
     void print(){
-        if(root!=0){
+        if(root != 0){
             infixTraverseTree(root);
         }
     }

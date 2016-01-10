@@ -13,7 +13,7 @@ private:
         P priority;
         Node* next;
         Node* prev;
-        Node(T v, P cPri) {
+        Node(T v, P cPri){
             value = v;
             priority = cPri;
             next = 0;
@@ -45,9 +45,8 @@ public:
 
     //first element return
     T front() {
-        if (empty()) {
-            std::cerr << "Error! Try front() from empty list." << std::endl;
-            exit(EXIT_FAILURE);
+        if (empty()){
+            std::cout << "Error! Try front() from empty list." << std::endl;
         }
         return firstElem->value;
     }
@@ -55,9 +54,8 @@ public:
     //return last element of list
     T back() {
         if (empty()){
-            std::cerr << "Error! Try back() from empty list." << std::endl;
-//            exit(EXIT_FAILURE);
-        }else{
+            std::cout << "Error! Try back() from empty list." << std::endl;
+        } else{
             return lastElem->value;
         }
     }
@@ -65,7 +63,7 @@ public:
     //add to end of list
     void push(T value, P pri) {
         Node* tmp = new Node(value, pri);
-        if (empty()) {
+        if (empty()){
             firstElem = tmp;
             lastElem = tmp;
             firstElem->next = lastElem;
@@ -80,10 +78,9 @@ public:
             tmp->prev = 0;
             firstElem = tmp;
             b->prev = tmp;
-
-        }       else {
+        } else{
             Node* curnode = firstElem;
-            while( curnode->next != 0 && (curnode->next->priority) >= (tmp->priority) ){
+            while(curnode->next != 0 && (curnode->next->priority) >= (tmp->priority)){
                 curnode = curnode->next;
             }
             Node* h = curnode ->next;
@@ -94,21 +91,20 @@ public:
                 h -> prev = tmp;
             }
         }
-
         counter++;
     }
 
     //delete first element in list
     void pop() {
-        if (empty()) {
-            std::cerr << "Error! Empty queue." << std::endl;
+        if (empty()){
+            std::cout << "Error! Empty queue." << std::endl;
             //            exit(EXIT_FAILURE);
-        }else{
+        } else{
             Node* removedNode = firstElem;
-            if (size() > 1) {
+            if (size() > 1){
                 firstElem = removedNode->next;
                 firstElem->prev = 0;
-            } else {
+            } else{
                 firstElem = 0;
                 lastElem = 0;
             }
@@ -116,7 +112,6 @@ public:
             counter--;
         }
     }
-
 
 
     void clear() {
@@ -136,10 +131,9 @@ public:
             }
             cout << tmp->value;
             cout << " }" << endl;
-        }else{
+        } else{
             cout <<"{ }";
         }
-
     }
 
 };

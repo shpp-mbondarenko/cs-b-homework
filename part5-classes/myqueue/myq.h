@@ -36,7 +36,7 @@ public:
         if(counter == 0){
             firstElem = tmp;
             lastElem = tmp;
-        }else{
+        } else{
             lastElem->next = tmp;
             lastElem = tmp;
         }
@@ -45,9 +45,9 @@ public:
 
     //return value of first element
     T front(){
-          if(!empty()){
+        if(!empty()){
             return  firstElem->value;
-        }else{
+        } else{
             std::cout << "You are trying to get element that not exists! Empty queue!" << std::endl;
         }
     }
@@ -59,8 +59,8 @@ public:
             firstElem = tmp->next;
             delete tmp;
             counter--;
-        }else{
-            std::cout << "You are trying to delete not exist element! Empty queue!" << std::endl;
+        } else{
+            cout << "You are trying to delete not exist element! Empty queue!" << endl;
         }
     }
 
@@ -69,7 +69,7 @@ public:
         if(!empty()){
             return  lastElem->value;
         }else{
-            std::cout << "You are trying to get element that not exists! Empty queue!" << std::endl;
+            cout << "You are trying to get element that not exists! Empty queue!" << endl;
         }
     }
 
@@ -101,7 +101,7 @@ public:
             }
             cout << tmp->value;
             cout << " }" << endl;
-        }else{
+        } else{
             cout <<"{ }";
         }
 
