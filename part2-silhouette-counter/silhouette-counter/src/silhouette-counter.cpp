@@ -135,30 +135,24 @@ bool isSilhouette(BlackObject c) {
     int leftX = 2000;
     int rightX = 0;
     Vector<Coordinate> vec = c.getVec();
-    for(Coordinate сurrentCoord : vec){
-        if(сurrentCoord.x > rightX){
-            rightX = сurrentCoord.x;
+    for(Coordinate currentCoord : vec){
+        if(currentCoord.x > rightX){
+            rightX = currentCoord.x;
         }
-        if(сurrentCoord.x < leftX){
-            leftX = сurrentCoord.x;
+        if(currentCoord.x < leftX){
+            leftX = currentCoord.x;
         }
-        if(сurrentCoord.y > botY){
-            botY = сurrentCoord.y;
+        if(currentCoord.y > botY){
+            botY = currentCoord.y;
         }
-        if(сurrentCoord.y < topY){
-            topY = сurrentCoord.y;
+        if(currentCoord.y < topY){
+            topY = currentCoord.y;
         }
     }
     double widthOfObj = rightX - leftX;
     double heightOfMan = botY - topY;
-    double uniqueMeasurer = heightOfMan / 8;
-    bool res;
-    if((widthOfObj / uniqueMeasurer) < (5.5) && (widthOfObj / uniqueMeasurer) > (1.5)){
-        res = true;
-    }else{
-        res = false;
-    }
-    return res;
+    double uniqueMeasurer = heightOfMan / 8; 
+    return ((widthOfObj / uniqueMeasurer) < (5.5) && (widthOfObj / uniqueMeasurer) > (1.5));
 }
 
 

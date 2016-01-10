@@ -6,7 +6,7 @@
 #include <fstream>
 
 
-#define CODED_FILE "ofstreamcode.txt"
+#define CODED_FILE "coded.txt"
 #define DECODED_FILE "decoded.txt"
 
 using namespace std;
@@ -69,7 +69,7 @@ void createTableOfEncodedCharacters(Node *root, map<char, vector<bool> > &table,
 }
 
 //make list of pointers to Node from mapChar
-list <Node*> createListOfNodesContainLlettersAndFrequency(map<char, int> mapChar){
+list <Node*> createListOfNodesContainLettersAndFrequency(map<char, int> mapChar){
     list <Node*> lPoin;
     map<char, int>:: iterator i;
     for(i = mapChar.begin(); i != mapChar.end(); ++i){
@@ -141,7 +141,11 @@ void printMap(map<char, vector<bool> > table){
     }
 }
 
-//create vector<bool> where we save our coded message readed from file
+/**
+* Create vector<bool> where we save our coded message readed from file
+* @param fName - file compress to
+* @param table - collection, symbols and his code
+*/
 vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<bool> > &table){
     vector<bool> *codedMessage = new vector<bool>();
     char d; //to read one character
@@ -167,7 +171,7 @@ vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<b
 }
 
 /**
-* write in file our coded map - "table" and coded file, in char representation
+* Write in file our coded map - "table" and coded file, in char representation
 * using one char to add the size of "table" (map)
 * next i add coded symbol (1)
 * add symbols length in char(2)
@@ -175,13 +179,16 @@ vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<b
 * using for this 4 bytes.
 * and do this sycle "table.size()".
 * after all i put the coded message char by char
+* @param codedFile - file, where we write compressed file
+* @param fName - file compress to
+* @param table - collection, symbols and his code
 */
-void writeInDocumentCompressedFile(char* fCode, string fName, map<char, vector<bool> > table){
+void writeInDocumentCompressedFile(string codedFile, string fName, map<char, vector<bool> > table){
     //create vector<bool> where we save our coded message readed from file
     vector<bool> *codedMessage = createEncodedRepresentationOfFile(fName, table);
     int sizeOfCodedMessage = codedMessage->size();
     char sizeOfTableMap = table.size();
-    ofstream fout(CODED_FILE, ios::binary);
+    ofstream fout(codedFile.c_str(), ios::binary);
     char buf = 0;
     fout.put(sizeOfTableMap); // write in file size of table map<char, vector<bool>>
     //writing in file char and his code
@@ -219,16 +226,20 @@ void writeInDocumentCompressedFile(char* fCode, string fName, map<char, vector<b
     fout.close(); // Close file
 }
 
-//decode our coded file
-void decryptCompressedFile(string fCode, string fDecoded){
-    ifstream s(fCode.c_str(), ios::binary);
+/**
+* Decode our coded file
+* @param fCoded - file, where we writed compressed file
+* @param fDecoded - file, where we write decoded file
+*/
+void decryptCompressedFile(string fCoded, string fDecoded){
+    ifstream s(fCoded.c_str(), ios::binary);
     ofstream dec(fDecoded.c_str(), ios::binary);
     char tabsize;
     s.get(tabsize);
     map<vector<bool>, char> tab;
     for(int i = 0; i < tabsize; i++){
-        char valuue;
-        s.get(valuue);
+        char value;
+        s.get(value);
         char len;
         s.get(len);
         int num = 0;
@@ -239,22 +250,22 @@ void decryptCompressedFile(string fCode, string fDecoded){
             keyCode.push_back(num < 0);
             num = num << 1;
         }
-        tab[keyCode] = valuue;
+        tab[keyCode] = value;
     }
     int smessage = 0;
     s.read((char*)& smessage, sizeof(smessage));
     vector<bool> cCodeMessage; //all text in one vector
     int counter = 0;
-    int couForByte = 0;
+    int counterForByte = 0;
     while(!s.eof()){
         char ch = 0;
         s.get(ch);
-        while(couForByte != 8){
+        while(counterForByte != 8){
             cCodeMessage.push_back(ch < 0);
             ch = ch << 1;
-            couForByte++;
+            counterForByte++;
         }
-        couForByte = 0;
+        counterForByte = 0;
         counter = counter + 8;
     }
     vector<bool> ress;
@@ -265,21 +276,22 @@ void decryptCompressedFile(string fCode, string fDecoded){
             ress.clear();
         }
     }
-    cout << "File decoded!!!" << endl;
+    cout << "File decoded!" << endl;
     s.close();
     dec.close();
 }
 /**
 * Compressing file
 * @param fName - file compress to
+* @param codedFile - file, where we write compressed file
 */
-void compressFile(string fName){
+void compressFile(string fName, string codedFile){
     //create collection - map from file
     map<char, int> mapChar = createMapOfCharacterFrequencyOccurrence(fName);
 
     //make list of pointers to Node
     //in one Node we store symbol and his frequency
-    list<Node*> listOfCharacterFrequencies = createListOfNodesContainLlettersAndFrequency(mapChar);
+    list<Node*> listOfCharacterFrequencies = createListOfNodesContainLettersAndFrequency(mapChar);
 
     vector<bool> code; //binary code of symbol
     map<char, vector<bool> > table; //char and his binary code
@@ -290,8 +302,8 @@ void compressFile(string fName){
     //    print(root,0);
 
     //write in file our coded map - "table" and coded file, in char representation
-    writeInDocumentCompressedFile(CODED_FILE, fName, table);
-    cout << "File compressed!";
+    writeInDocumentCompressedFile(codedFile, fName, table);
+    cout << "File compressed!" << endl;
 }
 
 int main()
@@ -303,21 +315,19 @@ int main()
         if(task == "exit"){
             break;
         }
-        if(task != "1" && task != "2"){
-            cout << "Program, don't know what to do! Please try again!" << endl;
-        }
         if(task == "1"){
             string fName;
             cout << "Enter filename:";
             getline(cin, fName);
-            compressFile(fName);
-        }
-        if(task == "2"){
+            compressFile(fName, CODED_FILE);
+        }else if(task == "2"){
             string fName;
             cout << "Enter filename to decode:";
             getline(cin, fName);
             //decode our coded file
             decryptCompressedFile(fName, DECODED_FILE);
+        }else{
+            cout << "Program, don't know what to do! Please try again!" << endl;
         }
     }
 

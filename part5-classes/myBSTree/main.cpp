@@ -32,5 +32,8 @@ int main()
     cout << "Find element with key 5." << endl;
     cout << a.find(5) << endl;
 
+    cout << "Find key, that not exists:" << endl;
+    cout << a.find(7) << endl;
+
     return 0;
 }

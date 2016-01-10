@@ -267,6 +267,9 @@ bool checkValidBracketsInput(string &inputExpression){
             closeB++;
         }
     }
+    if((openB == closeB) == false){
+        cout << "Your brackets is invalid! Please try again!" << endl;
+    }
     return openB == closeB;
 }
 
@@ -303,24 +306,24 @@ bool checkValidOperatorsInput(string &inputExpression){
 void addVariableToCalculator(string inputVariable, Map<string, string> &variablesMap){
     string key;
     string value;
-    int cursorPossition = 0;
-    while(inputVariable[cursorPossition] != '=' && cursorPossition < inputVariable.length()){
-        if(isalpha(inputVariable[cursorPossition])){
-            key += inputVariable[cursorPossition];
-            cursorPossition++;
+    int cursorPosition = 0;
+    while(inputVariable[cursorPosition] != '=' && cursorPosition < inputVariable.length()){
+        if(isalpha(inputVariable[cursorPosition])){
+            key += inputVariable[cursorPosition];
+            cursorPosition++;
         }else{
             cout << "Your variable's name is incorrect." << endl;
-            cursorPossition = inputVariable.length();
+            cursorPosition = inputVariable.length();
         }
     }
-    cursorPossition++;
-    if(cursorPossition >= inputVariable.length()){
+    cursorPosition++;
+    if(cursorPosition >= inputVariable.length()){
         cout << "Your input is incorrect. Please try again!" << endl;
     }else{
         //now make value
-        while (cursorPossition < inputVariable.length()){
-            value += inputVariable[cursorPossition];
-            cursorPossition++;
+        while (cursorPosition < inputVariable.length()){
+            value += inputVariable[cursorPosition];
+            cursorPosition++;
         }
         variablesMap[key] = value;
     }
@@ -348,10 +351,6 @@ int main(){
         }
         if(checkValidBracketsInput(inputExpression) && checkValidOperatorsInput(inputExpression)){
             calculateResult(inputExpression, variablesMap);
-        }else{
-            if(checkValidBracketsInput(inputExpression) == false){
-                cout << "Your brackets is invalid!" << endl;
-            }
         }
     }
     return 0;
