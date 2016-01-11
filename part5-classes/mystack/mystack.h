@@ -17,7 +17,7 @@ private:
     void enhance() {
         maxSize *= 2;
         T *newData = new T[maxSize];
-        for (int i = 0; i < curSize; i++){
+        for(int i = 0; i < curSize; i++){
             newData[i] = stData[i];
         }
         T *tmp = stData;
@@ -47,7 +47,7 @@ public:
 
     // adds an element to the stack
     void push(T value) {
-        if (notExceed()){
+        if(notExceed()){
             enhance();
         }
         stData[curSize] = value;
@@ -58,7 +58,7 @@ public:
     T top() {
         if(curSize != 0){
             return stData[curSize-1];
-        } else{
+        }else{
             std::cout << "You are trying to get not exist value! Empty stack!" << std::endl;
         }
     }

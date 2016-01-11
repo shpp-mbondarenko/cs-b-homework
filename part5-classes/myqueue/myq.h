@@ -36,7 +36,7 @@ public:
         if(counter == 0){
             firstElem = tmp;
             lastElem = tmp;
-        } else{
+        }else{
             lastElem->next = tmp;
             lastElem = tmp;
         }
@@ -44,28 +44,28 @@ public:
     }
 
     //return value of first element
-    T front(){
+    T front() {
         if(!empty()){
             return  firstElem->value;
-        } else{
+        }else{
             std::cout << "You are trying to get element that not exists! Empty queue!" << std::endl;
         }
     }
 
     //delete first element
-    T pop(){
+    T pop() {
         if(!empty()){
             Node* tmp = firstElem;
             firstElem = tmp->next;
             delete tmp;
             counter--;
-        } else{
+        }else{
             cout << "You are trying to delete not exist element! Empty queue!" << endl;
         }
     }
 
     //return last element of Queue
-    T back(){
+    T back() {
         if(!empty()){
             return  lastElem->value;
         }else{
@@ -74,11 +74,11 @@ public:
     }
 
     //size of Queue
-    int size(){
+    int size() {
         return counter;
     }
 
-    void clear(){
+    void clear() {
         firstElem = 0;
         lastElem = 0;
         counter = 0;
@@ -90,7 +90,7 @@ public:
     }
 
     //print Queue
-    void toString(){
+    void toString() {
         if(!empty()){
             cout <<"{ ";
             Node * tmp = firstElem;
@@ -101,7 +101,7 @@ public:
             }
             cout << tmp->value;
             cout << " }" << endl;
-        } else{
+        }else{
             cout <<"{ }";
         }
 

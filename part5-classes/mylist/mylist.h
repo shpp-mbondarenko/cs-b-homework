@@ -73,16 +73,16 @@ public:
     T front() {
         if (empty()){
             std::cout << "Error! Try front() from empty list." << std::endl;
-        } else{
+        }else{
             return head->value;
         }
     }
 
     //return last element of list
     T back() {
-        if (empty()){
+        if(empty()){
             std::cout << "Error! Try back() from empty list." << std::endl;
-        } else{
+        }else{
             return tail->value;
         }
     }
@@ -91,10 +91,10 @@ public:
     void insert(T val, int n = 0) {
         if(n >= counter){
             push_back(val);
-        } else{
+        }else{
             if(n == 0){
                 push_front(val);
-            } else{
+            }else{
                 Node* t = new Node(val);
                 int c = 0;
                 Node* tmp = head;
@@ -113,10 +113,10 @@ public:
     //add to start of list
     void push_front(T value) {
         Node* newNode = new Node(value);
-        if (empty()){
+        if(empty()){
             tail = newNode;
             head = newNode;
-        } else{
+        }else{
             head->prev = newNode;
             newNode->next = head;
             head = newNode;
@@ -127,10 +127,10 @@ public:
     //add to end of list
     void push_back(T value) {
         Node* newNode = new Node(value);
-        if (empty()){
+        if(empty()){
             head = newNode;
             tail = newNode;
-        } else{
+        }else{
             tail->next = newNode;
             newNode->prev = tail;
             tail = newNode;
@@ -140,14 +140,14 @@ public:
 
     //delete first element in list
     void pop_front() {
-        if (empty()){
+        if(empty()){
             std::cout << "Try to pop_front. Error! Empty list." << std::endl;
-        } else{
+        }else{
             Node* removedNode = head;
-            if (size() > 1){
+            if(size() > 1){
                 head = removedNode->next;
                 head->prev = 0;
-            } else{
+            }else{
                 head = 0;
                 tail = 0;
             }
@@ -158,7 +158,7 @@ public:
 
     //delete element from tail
     void pop_back() {
-        if (empty()){
+        if(empty()){
             std::cout << "Try to pop_back. Error! Empty list." << std::endl;
             //            exit(EXIT_FAILURE);
         }else{
@@ -166,7 +166,7 @@ public:
             if (size() > 1){
                 tail = removedNode->prev;
                 tail->next = 0;
-            } else{
+            }else{
                 tail = 0;
                 head = 0;
             }

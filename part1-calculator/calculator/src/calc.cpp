@@ -61,7 +61,7 @@ bool isOperator(char ch){
  */
 string splitIntoTokens(int pos, string inputExpression){
     string res;
-    if (isOperator(inputExpression[pos])){
+    if(isOperator(inputExpression[pos])){
         res = inputExpression[pos];
     }else {
         while (!isOperator(inputExpression[pos])){
@@ -198,7 +198,7 @@ void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& 
                     }
                 }
             }
-        }else {
+        }else{
             operandStack.push(token);
         }
     }

@@ -75,7 +75,7 @@ Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename){
  */
 void getSingleSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordinate> &silho) {
     if((x <= img[0].size()) && (y <= img.size())){
-        if (!(img[y][x])) {
+        if(!(img[y][x])){
             return;
         }
     }
@@ -113,9 +113,9 @@ Vector<BlackObject> getCollectionOfBlackObjects(Vector<Vector<bool> > &img) {
     int imgWidth = img[0].size();
     int imgHeight = img.size();
     Vector<BlackObject> result;
-    for (int y = 0; y < imgHeight; y++){
-        for (int x = 0; x < imgWidth; x++){
-            if ((img[y][x])) {
+    for(int y = 0; y < imgHeight; y++){
+        for(int x = 0; x < imgWidth; x++){
+            if((img[y][x])){
                 BlackObject object = getSingleBlackObject(img, x, y);
                 result.add(object);
             }

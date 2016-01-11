@@ -45,7 +45,7 @@ public:
 
     //first element return
     T front() {
-        if (empty()){
+        if(empty()){
             std::cout << "Error! Try front() from empty list." << std::endl;
         }
         return firstElem->value;
@@ -53,9 +53,9 @@ public:
 
     //return last element of list
     T back() {
-        if (empty()){
+        if(empty()){
             std::cout << "Error! Try back() from empty list." << std::endl;
-        } else{
+        }else{
             return lastElem->value;
         }
     }
@@ -63,7 +63,7 @@ public:
     //add to end of list
     void push(T value, P pri) {
         Node* tmp = new Node(value, pri);
-        if (empty()){
+        if(empty()){
             firstElem = tmp;
             lastElem = tmp;
             firstElem->next = lastElem;
@@ -78,7 +78,7 @@ public:
             tmp->prev = 0;
             firstElem = tmp;
             b->prev = tmp;
-        } else{
+        }else{
             Node* curnode = firstElem;
             while(curnode->next != 0 && (curnode->next->priority) >= (tmp->priority)){
                 curnode = curnode->next;
@@ -96,15 +96,15 @@ public:
 
     //delete first element in list
     void pop() {
-        if (empty()){
+        if(empty()){
             std::cout << "Error! Empty queue." << std::endl;
             //            exit(EXIT_FAILURE);
-        } else{
+        }else{
             Node* removedNode = firstElem;
-            if (size() > 1){
+            if(size() > 1){
                 firstElem = removedNode->next;
                 firstElem->prev = 0;
-            } else{
+            }else{
                 firstElem = 0;
                 lastElem = 0;
             }
@@ -131,7 +131,7 @@ public:
             }
             cout << tmp->value;
             cout << " }" << endl;
-        } else{
+        }else{
             cout <<"{ }";
         }
     }

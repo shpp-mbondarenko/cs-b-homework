@@ -33,10 +33,11 @@ private:
         int lefth = findHeight(root->left);
         int righth = findHeight(root->right);
 
-        if(lefth > righth)
+        if(lefth > righth){
             return lefth + 1;
-        else
+        }else{
             return righth + 1;
+        }
     }
 
     /* find factor balase of BSTree */
@@ -54,13 +55,13 @@ private:
 
     /* Deleting ode with key "k" */
     Node* removeNode(Node* n, K k){
-        if (n == NULL){
+        if(n == NULL){
             cout << "You can't delete node from empty tree!" << endl;
             return NULL;
         }
-        if (k < n->key){                    // if "k" less than current key go to left subtree and do removeNode
+        if(k < n->key){                    // if "k" less than current key go to left subtree and do removeNode
             n->left = removeNode(n->left, k);
-        }else if (k > n->key) {
+        }else if(k > n->key) {
             n->right = removeNode(n->right, k);
         }else{                             // if "k" = key
             Node* l = n->left;                   // save left subtree of current node
@@ -80,14 +81,14 @@ private:
 
     /* Finding minimum node */
     Node* findMinimum(Node* t){
-        if (t->left == NULL)
+        if(t->left == NULL)
             return t;
         return findMinimum(t->left);
     }
 
     /* delete minimum node  */
     Node* removeMinimum(Node* n){
-        if (n->left == NULL)
+        if(n->left == NULL)
             return n->right;
         n->left = removeMinimum(n->left);
         return balance(n);
@@ -116,12 +117,12 @@ private:
     /* Balancing tree */
     Node* balance(Node* n){
         fixHeight(n);                              // Calculating balance factor of tree
-        if (balanceFactor(n) == 2){               // If the height of the right subtree of the current node greater than the height of the left 2
-            if (balanceFactor(n->right) < 0)           // If the balance factor of the right subtree is less than 0 (requires big turn)
+        if(balanceFactor(n) == 2){               // If the height of the right subtree of the current node greater than the height of the left 2
+            if(balanceFactor(n->right) < 0)           // If the balance factor of the right subtree is less than 0 (requires big turn)
                 n->right = rotateRight(n->right);          // Make a right turn right subtree
             return rotateLeft(n);                      // We perform a left turn tree and return it
         }
-        if (balanceFactor(n) == -2){
+        if(balanceFactor(n) == -2){
             if (balanceFactor(n->left) > 0)
                 n->left = rotateLeft(n->left);
             return rotateRight(n);
@@ -131,21 +132,21 @@ private:
 
     /* Find key in tree */
     Node* findNode(Node* t, K key){
-        if (t == NULL){
+        if(t == NULL){
             cout << "You trying to look in empty tree. Please add elements, first." << endl;
             return NULL;
         }
-        if (key == t->key){
+        if(key == t->key){
             return t;
         }
-        if (key < t->key){
+        if(key < t->key){
             if(t->left != NULL && (t->left->key) > key){
                 cout << "Sorry, can't find value, with this key." << endl;
                 return NULL;
             }else{
                 return findNode(t->left, key);
             }
-        } else if (key > t->key){
+        }else if(key > t->key){
             if(t->right != NULL && (t->right->key) < key){
                 cout << "Sorry, can't find value, with this key." << endl;
                 return NULL;
@@ -160,7 +161,7 @@ private:
 
     /* go through all tree */
     void infixTraverseTree(Node* t, int k = 0){
-        if (t != NULL){
+        if(t != NULL){
             infixTraverseTree(t->left, k+3);
             for(int i = 0; i < k; i++){
                 cout << "   ";
@@ -181,7 +182,7 @@ private:
         }else{
             if(keyval < t->key){
                 t->left = insertNode(t->left, value, keyval);
-            } else if (keyval > t->key){
+            }else if(keyval > t->key){
                 t->right = insertNode(t->right, value, keyval);
             }
         }

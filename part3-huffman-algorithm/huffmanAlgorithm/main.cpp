@@ -98,7 +98,7 @@ map<char, int> createMapOfCharacterFrequencyOccurrence(string fName){
     //create MAP for all symbols in our string and quantity of their appear
     map<char, int> mapChar;
     //go through string. Count elements(char)
-    while (str.get(n)){
+    while(str.get(n)){
         mapChar[n]++;
     }
     str.close();
@@ -150,7 +150,7 @@ vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<b
     vector<bool> *codedMessage = new vector<bool>();
     char d; //to read one character
     ifstream str(fName.c_str(), ios::binary);
-    while (str.get(d)) {
+    while(str.get(d)){
         vector<bool> tmp = table[d];
         for(int i = 0; i < tmp.size(); i++){
             codedMessage->push_back(tmp[i]);
