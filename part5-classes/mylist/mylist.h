@@ -13,7 +13,7 @@ private:
         T value;
         Node* next;
         Node* prev;
-        Node (){
+        Node () {
             value = 0;
             next = 0;
             prev = 0;
@@ -38,7 +38,7 @@ public:
         clear();
     }
     // overload operator []
-    T operator[](int i){
+    T operator[](int i) {
         Node* res = new Node();
         if(i <= counter){
             for(int y = 0; y < i; y++){
@@ -107,7 +107,6 @@ public:
                 tmp->prev = t;
             }
         }
-
     }
 
     //add to start of list
@@ -141,7 +140,7 @@ public:
     //delete first element in list
     void pop_front() {
         if(empty()){
-            std::cout << "Try to pop_front. Error! Empty list." << std::endl;
+            cout << "Try to pop_front. Error! Empty list." << endl;
         }else{
             Node* removedNode = head;
             if(size() > 1){
@@ -159,8 +158,7 @@ public:
     //delete element from tail
     void pop_back() {
         if(empty()){
-            std::cout << "Try to pop_back. Error! Empty list." << std::endl;
-            //            exit(EXIT_FAILURE);
+            cout << "Try to pop_back. Error! Empty list." << endl;
         }else{
             Node* removedNode = tail;
             if (size() > 1){

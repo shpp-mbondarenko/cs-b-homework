@@ -17,9 +17,9 @@ public:
     char c;     //our symbol char
     Node *left, *right;
 
-    Node(){}
+    Node() {}
 
-    Node(Node *L, Node *R){
+    Node(Node *L, Node *R) {
         left = L;
         right = R;
         c = NULL;
@@ -30,13 +30,13 @@ public:
 
 
 //sort list of node pointers
-struct sortList{
+struct sortList {
     bool operator()(Node* l, Node* r) const
     {return l -> quan < r -> quan;}
 };
 
 //print tree
-void print(Node *root, unsigned k = 0){
+void print(Node *root, unsigned k = 0) {
     if(root != NULL){
         print(root -> left,k+3);
         for(unsigned i = 0; i < k; i++){
@@ -53,7 +53,7 @@ void print(Node *root, unsigned k = 0){
 
 
 //create a table of code for each character
-void createTableOfEncodedCharacters(Node *root, map<char, vector<bool> > &table, vector<bool> &code){
+void createTableOfEncodedCharacters(Node *root, map<char, vector<bool> > &table, vector<bool> &code) {
     if(root->left != NULL){
         code.push_back(0);
         createTableOfEncodedCharacters(root->left, table, code);
@@ -69,7 +69,7 @@ void createTableOfEncodedCharacters(Node *root, map<char, vector<bool> > &table,
 }
 
 //make list of pointers to Node from mapChar
-list <Node*> createListOfNodesContainLettersAndFrequency(map<char, int> mapChar){
+list <Node*> createListOfNodesContainLettersAndFrequency(map<char, int> mapChar) {
     list <Node*> lPoin;
     map<char, int>:: iterator i;
     for(i = mapChar.begin(); i != mapChar.end(); ++i){
@@ -92,7 +92,7 @@ list <Node*> createListOfNodesContainLettersAndFrequency(map<char, int> mapChar)
 }
 
 // make map from file map<char, int> where char is one symbol and int quantity of appearing
-map<char, int> createMapOfCharacterFrequencyOccurrence(string fName){
+map<char, int> createMapOfCharacterFrequencyOccurrence(string fName) {
     char n; //to read one character
     ifstream str(fName.c_str(), ios::binary);
     //create MAP for all symbols in our string and quantity of their appear
@@ -111,8 +111,8 @@ map<char, int> createMapOfCharacterFrequencyOccurrence(string fName){
 }
 
 //create binary tree of Huffman
-void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes){
-    while (ListOfPointersToNodes.size() != 1){
+void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes) {
+    while(ListOfPointersToNodes.size() != 1){
         ListOfPointersToNodes.sort(sortList()); //sorting list
 
         //peek and pop smalest two elements in list
@@ -127,7 +127,7 @@ void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes){
 }
 
 //print coded map <char, vector<bool> > table
-void printMap(map<char, vector<bool> > table){
+void printMap(map<char, vector<bool> > table) {
     int y = 0;
     //    show elements of "table" map
     map<char, vector<bool> > ::iterator z;
@@ -146,7 +146,7 @@ void printMap(map<char, vector<bool> > table){
 * @param fName - file compress to
 * @param table - collection, symbols and his code
 */
-vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<bool> > &table){
+vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<bool> > &table) {
     vector<bool> *codedMessage = new vector<bool>();
     char d; //to read one character
     ifstream str(fName.c_str(), ios::binary);
@@ -183,7 +183,7 @@ vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<b
 * @param fName - file compress to
 * @param table - collection, symbols and his code
 */
-void writeInDocumentCompressedFile(string codedFile, string fName, map<char, vector<bool> > table){
+void writeInDocumentCompressedFile(string codedFile, string fName, map<char, vector<bool> > table) {
     //create vector<bool> where we save our coded message readed from file
     vector<bool> *codedMessage = createEncodedRepresentationOfFile(fName, table);
     int sizeOfCodedMessage = codedMessage->size();
@@ -231,7 +231,7 @@ void writeInDocumentCompressedFile(string codedFile, string fName, map<char, vec
 * @param fCoded - file, where we writed compressed file
 * @param fDecoded - file, where we write decoded file
 */
-void decryptCompressedFile(string fCoded, string fDecoded){
+void decryptCompressedFile(string fCoded, string fDecoded) {
     ifstream stream(fCoded.c_str(), ios::binary);
     ofstream dec(fDecoded.c_str(), ios::binary);
     char tabsize;
@@ -285,7 +285,7 @@ void decryptCompressedFile(string fCoded, string fDecoded){
 * @param fName - file compress to
 * @param codedFile - file, where we write compressed file
 */
-void compressFile(string fName, string codedFile){
+void compressFile(string fName, string codedFile) {
     //create collection - map from file
     map<char, int> mapChar = createMapOfCharacterFrequencyOccurrence(fName);
 
@@ -306,8 +306,7 @@ void compressFile(string fName, string codedFile){
     cout << "File compressed!" << endl;
 }
 
-int main()
-{
+int main() {
     while(true){
         cout << "What we shall do? Input 1 for compress file. Input 2 for decrypt file." << endl;
         string task;
@@ -330,6 +329,5 @@ int main()
             cout << "Program, don't know what to do! Please try again!" << endl;
         }
     }
-
     return 0;
 }

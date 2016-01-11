@@ -6,14 +6,14 @@
 using namespace std;
 
 template <class T , class P>
-class PQueue{
+class PQueue {
 private:
     struct Node {
         T value;
         P priority;
         Node* next;
         Node* prev;
-        Node(T v, P cPri){
+        Node(T v, P cPri) {
             value = v;
             priority = cPri;
             next = 0;
@@ -46,7 +46,7 @@ public:
     //first element return
     T front() {
         if(empty()){
-            std::cout << "Error! Try front() from empty list." << std::endl;
+            cout << "Error! Try front() from empty list." << endl;
         }
         return firstElem->value;
     }
@@ -54,7 +54,7 @@ public:
     //return last element of list
     T back() {
         if(empty()){
-            std::cout << "Error! Try back() from empty list." << std::endl;
+            cout << "Error! Try back() from empty list." << endl;
         }else{
             return lastElem->value;
         }
@@ -97,8 +97,7 @@ public:
     //delete first element in list
     void pop() {
         if(empty()){
-            std::cout << "Error! Empty queue." << std::endl;
-            //            exit(EXIT_FAILURE);
+            cout << "Error! Empty queue." << endl;
         }else{
             Node* removedNode = firstElem;
             if(size() > 1){
@@ -118,10 +117,11 @@ public:
         while(!empty())
             pop();
     }
+
     //print Queue
-    void toString(){
+    void toString() {
         if(!empty()){
-            cout << counter  <<endl;
+            cout << counter  << endl;
             cout <<"{ ";
             Node * tmp = firstElem;
             for(int i=1; i<counter; i++){
@@ -135,7 +135,6 @@ public:
             cout <<"{ }";
         }
     }
-
 };
 
 #endif // MYPQUEUE

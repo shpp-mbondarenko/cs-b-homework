@@ -13,7 +13,7 @@ using namespace std;
 /**
  * The Coordinate structure. Save position of pixel
  */
-struct Coordinate{
+struct Coordinate {
     int y;
     int x;
 };
@@ -21,7 +21,7 @@ struct Coordinate{
 /**
  * Class that stores vector of coordinates of one black object
  */
-class BlackObject{
+class BlackObject {
 private:
     Vector<Coordinate> object;
 public:
@@ -34,7 +34,7 @@ public:
      * Give access to vector "object"
      * @return - Vector<Coordinate>
      */
-    Vector<Coordinate> getVec(){
+    Vector<Coordinate> getVec() {
         return object;
     }
 };
@@ -47,7 +47,7 @@ public:
  * @param filename - Name of loaded image
  * @return - Vector two dimensional comprising of 0 and 1
  */
-Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename){
+Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename) {
     GBufferedImage* img = new GBufferedImage(0,0,900,900);
     img->load(filename);
     int imgWidth = img->getWidth();
@@ -97,7 +97,7 @@ void getSingleSilhouette(Vector<Vector<bool> > &img, int x, int y, Vector<Coordi
  * @param image - Binarized user's image
  * @return - vector<Coordinate> one silhouette
  */
-BlackObject getSingleBlackObject(Vector<Vector<bool> > &img, int x, int y){
+BlackObject getSingleBlackObject(Vector<Vector<bool> > &img, int x, int y) {
     Vector<Coordinate> silho;
     getSingleSilhouette(img, x, y, silho);
     BlackObject res(silho);
@@ -151,7 +151,7 @@ bool isSilhouette(BlackObject c) {
     }
     double widthOfObj = rightX - leftX;
     double heightOfMan = botY - topY;
-    double uniqueMeasurer = heightOfMan / 8; 
+    double uniqueMeasurer = heightOfMan / 8;
     return ((widthOfObj / uniqueMeasurer) < (5.5) && (widthOfObj / uniqueMeasurer) > (1.5));
 }
 
@@ -183,7 +183,7 @@ void countSilhouettes(string filename) {
 /**
  * Calculate quantity of black objects, on white background.
  */
-int main(){
+int main() {
     while(true){
         string choice;
         cout << "Input 1 to enter your filename and 2 for standard test collection." << endl;

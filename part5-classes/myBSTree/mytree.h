@@ -10,12 +10,12 @@ class BSTree {
 
 public:
 private:
-    struct Node{
+    struct Node {
         K key;
         T val;
         int height;
         Node(){};
-        Node(T value, K keyval){
+        Node(T value, K keyval) {
             val = value;
             key = keyval;
             left = 0;
@@ -27,7 +27,7 @@ private:
     Node* root;
 
     //find height of root
-    int findHeight(Node* root){
+    int findHeight(Node* root) {
         if(root == NULL)
             return -1;
         int lefth = findHeight(root->left);
@@ -41,12 +41,12 @@ private:
     }
 
     /* find factor balase of BSTree */
-    int balanceFactor(Node* n){
+    int balanceFactor(Node* n) {
         return findHeight(n->right) - findHeight(n->left);
     }
 
     /* fixing height of root node */
-    void fixHeight(Node* n){
+    void fixHeight(Node* n) {
         int hl = findHeight(n->left);               // Getting height of left subtree
         int hr = findHeight(n->right);              // Getting height of right subtree
         n->height = ((hl > hr) ? hl : hr) + 1;      // root height is longest height of subtree +1
@@ -54,20 +54,20 @@ private:
 
 
     /* Deleting ode with key "k" */
-    Node* removeNode(Node* n, K k){
+    Node* removeNode(Node* n, K k) {
         if(n == NULL){
             cout << "You can't delete node from empty tree!" << endl;
             return NULL;
         }
         if(k < n->key){                    // if "k" less than current key go to left subtree and do removeNode
             n->left = removeNode(n->left, k);
-        }else if(k > n->key) {
+        }else if(k > n->key){
             n->right = removeNode(n->right, k);
         }else{                             // if "k" = key
             Node* l = n->left;                   // save left subtree of current node
             Node* r = n->right;                  // and save right sub-tree
             delete n;                            // Delete n Node
-            if (r == NULL){                       // if right is null return left
+            if(r == NULL){                       // if right is null return left
                 return l;
             }
             Node* m = findMinimum(r);            // find and save min node of right sub-tree
@@ -80,14 +80,14 @@ private:
 
 
     /* Finding minimum node */
-    Node* findMinimum(Node* t){
+    Node* findMinimum(Node* t) {
         if(t->left == NULL)
             return t;
         return findMinimum(t->left);
     }
 
     /* delete minimum node  */
-    Node* removeMinimum(Node* n){
+    Node* removeMinimum(Node* n) {
         if(n->left == NULL)
             return n->right;
         n->left = removeMinimum(n->left);
@@ -95,7 +95,7 @@ private:
     }
 
     /* Right turn of tree */
-    Node* rotateRight(Node* n){
+    Node* rotateRight(Node* n) {
         Node* l = n->left;   // Keeping the left subtree of the current node
         n->left = l->right;  // The left subtree of the current node becomes the right subtree stored subtree
         l->right = n;        // Subtree right subtree saved becomes the current node
@@ -105,7 +105,7 @@ private:
     }
 
     /* Left turn of tree */
-    Node* rotateLeft(Node* n){
+    Node* rotateLeft(Node* n) {
         Node* r = n->right;
         n->right = r->left;
         r->left = n;
@@ -115,7 +115,7 @@ private:
     }
 
     /* Balancing tree */
-    Node* balance(Node* n){
+    Node* balance(Node* n) {
         fixHeight(n);                              // Calculating balance factor of tree
         if(balanceFactor(n) == 2){               // If the height of the right subtree of the current node greater than the height of the left 2
             if(balanceFactor(n->right) < 0)           // If the balance factor of the right subtree is less than 0 (requires big turn)
@@ -131,7 +131,7 @@ private:
     }
 
     /* Find key in tree */
-    Node* findNode(Node* t, K key){
+    Node* findNode(Node* t, K key) {
         if(t == NULL){
             cout << "You trying to look in empty tree. Please add elements, first." << endl;
             return NULL;
@@ -154,13 +154,12 @@ private:
                 return findNode(t->right, key);
             }
         }
-
     }
 
 
 
     /* go through all tree */
-    void infixTraverseTree(Node* t, int k = 0){
+    void infixTraverseTree(Node* t, int k = 0) {
         if(t != NULL){
             infixTraverseTree(t->left, k+3);
             for(int i = 0; i < k; i++){
@@ -172,7 +171,7 @@ private:
     }
 
     //insert Node
-    Node* insertNode(Node* t, T value, K keyval){
+    Node* insertNode(Node* t, T value, K keyval) {
         if(t == NULL){
             t = new Node();
             t->key = keyval;
@@ -190,30 +189,30 @@ private:
     }
 public:
     //constructor
-    BSTree(){
+    BSTree() {
         root = NULL;
     }
 
-    ~BSTree(){}
+    ~BSTree() {}
 
     //insert element into BSTree
-    void insert(T value, K keyval){
+    void insert(T value, K keyval) {
         root = insertNode(root, value, keyval);
     }
 
     //print BST
-    void print(){
+    void print() {
         if(root != 0){
             infixTraverseTree(root);
         }
     }
     //remove node
-    void remove(K keyval){
+    void remove(K keyval) {
         root = removeNode(root, keyval);
     }
 
     //return value from node
-    T find(K key){
+    T find(K key) {
         Node* tmp = findNode(root, key);
         if(tmp == NULL){
             return NULL;

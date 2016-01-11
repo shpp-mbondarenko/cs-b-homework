@@ -20,9 +20,9 @@ int main()
 
     //get size of stack
     cout << st.size() <<endl;
+
     //print stack
     st.toString();
-
 
     return 0;
 }

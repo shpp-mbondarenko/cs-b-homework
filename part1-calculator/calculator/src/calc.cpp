@@ -22,7 +22,7 @@ using namespace std;
  * @param symbol - The sign of operation "+-^/*"
  * @return - double result of calculation
  */
-double executeOperation(double firstParam, double secondParam, char symbol){
+double executeOperation(double firstParam, double secondParam, char symbol) {
     double res;
     if(symbol == '+'){
         res = firstParam + secondParam;
@@ -48,7 +48,7 @@ double executeOperation(double firstParam, double secondParam, char symbol){
  * @param ch - Char from input formula
  * @return - true if it is operation sign
  */
-bool isOperator(char ch){
+bool isOperator(char ch) {
     return (ch == '+' || ch == '-' || ch == '/' || ch == '*' || ch == '^');
 }
 
@@ -59,12 +59,12 @@ bool isOperator(char ch){
  * @param inputFormula - User's string
  * @return - token - or its variable, or its operation sign
  */
-string splitIntoTokens(int pos, string inputExpression){
+string splitIntoTokens(int pos, string inputExpression) {
     string res;
     if(isOperator(inputExpression[pos])){
         res = inputExpression[pos];
-    }else {
-        while (!isOperator(inputExpression[pos])){
+    }else{
+        while(!isOperator(inputExpression[pos])){
             res += inputExpression[pos];
             pos++;
             if(pos == inputExpression.length()){
@@ -80,7 +80,7 @@ string splitIntoTokens(int pos, string inputExpression){
  * @param ch - Operator sign
  * @return - Priority of operator
  */
-int getPriority(char ch){
+int getPriority(char ch) {
     int res;
     if(ch == '+' || ch == '-'){
         res = 0;
@@ -102,7 +102,7 @@ int getPriority(char ch){
  * @param postfixNotat - Queue of operators and operands in postfix notation
  * @return - Result of user's expression
  */
-double processingQueueOfPostfixNotation(Queue<string> postfixNotat){
+double processingQueueOfPostfixNotation(Queue<string> postfixNotat) {
     double res;
     Vector<string> vec;
     while(!postfixNotat.isEmpty()){
@@ -135,7 +135,7 @@ double processingQueueOfPostfixNotation(Queue<string> postfixNotat){
  * @param variablesMap - Collection of variables
  * @return - True - all variables are replaced and we can continue calculate
  */
-bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &variablesMap){
+bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &variablesMap) {
     bool passCondition = true;
     string key;
     for(int i = 0; i < inputExpression.length(); i++){ //if we have variables - ask user to enter a number and replace string
@@ -164,7 +164,7 @@ bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &
  * @param postfixNotat - Queue. Postfix notation of formula
  * @param token - Token for user's string
  */
-void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& postfixNotation, string token){
+void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& postfixNotation, string token) {
     if(operandStack.isEmpty()){ //if stack is empty then we add first sign to stack
         operandStack.push(token);
     }else if(!operandStack.isEmpty()){
@@ -210,7 +210,7 @@ void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& 
  * @param inputExpression - string of user's input
  * @param variablesMap - Collection of variables
  */
-void calculateResult(string &inputExpression, Map<string, string> &variablesMap){
+void calculateResult(string &inputExpression, Map<string, string> &variablesMap) {
     if(replaceVariablesInExpression(inputExpression, variablesMap)){
         myStack<string> operandStack;
         Queue<string> postfixNotation;
@@ -256,7 +256,7 @@ void calculateResult(string &inputExpression, Map<string, string> &variablesMap)
  * Check if user input have right quantity of round brackets
  * @param inputExpression - string of user's input
  */
-bool checkValidBracketsInput(string &inputExpression){
+bool checkValidBracketsInput(string &inputExpression) {
     int openB = 0;
     int closeB = 0;
     for(int i = 0; i < inputExpression.length(); i++){
@@ -279,7 +279,7 @@ bool checkValidBracketsInput(string &inputExpression){
  * @param inputExpression - string of user's input
  * @return - true if we have right expression
  */
-bool checkValidOperatorsInput(string &inputExpression){
+bool checkValidOperatorsInput(string &inputExpression) {
     bool res;
     for(int i = 0; i < inputExpression.length(); i++){
         char ch = inputExpression[i];
@@ -304,7 +304,7 @@ bool checkValidOperatorsInput(string &inputExpression){
  * @param inputVariable - string of user's input
  * @param variablesMap - place where we store variables
  */
-void addVariableToCalculator(string inputVariable, Map<string, string> &variablesMap){
+void addVariableToCalculator(string inputVariable, Map<string, string> &variablesMap) {
     string key;
     string value;
     int cursorPosition = 0;
@@ -331,7 +331,7 @@ void addVariableToCalculator(string inputVariable, Map<string, string> &variable
 }
 
 
-int main(){
+int main() {
     //for storing ours variables create collection map with variable as a key
     Map<string, string> variablesContainer;
     while(true){
@@ -339,9 +339,8 @@ int main(){
         string inputVariable = getLine("Enter variable:");
         if(inputVariable == "exit"){
             break;
-        }else{
-            addVariableToCalculator(inputVariable, variablesContainer);
         }
+        addVariableToCalculator(inputVariable, variablesContainer);
     }
 
     while(true){

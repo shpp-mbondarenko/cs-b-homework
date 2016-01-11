@@ -6,14 +6,14 @@
 using namespace std;
 
 template <class T>
-class Queue{
+class Queue {
 private:
     // create structure of node where we save value and pointer to next elem
-    struct Node{
+    struct Node {
         T value;
         Node * next;
-        Node (){}       //empty constructor
-        Node (T val){
+        Node () {}       //empty constructor
+        Node (T val) {
             value = val;
             next = 0;
         }
@@ -23,15 +23,15 @@ private:
     int counter;
 public:
     //constructor
-    Queue(){
+    Queue() {
         firstElem = 0;
         lastElem = 0;
         counter = 0;
     }
-    ~Queue(){}
+    ~Queue() {}
 
     //add value to Queue
-    void push (T val){
+    void push (T val) {
         Node* tmp = new Node(val);
         if(counter == 0){
             firstElem = tmp;
@@ -48,7 +48,7 @@ public:
         if(!empty()){
             return  firstElem->value;
         }else{
-            std::cout << "You are trying to get element that not exists! Empty queue!" << std::endl;
+            cout << "You are trying to get element that not exists! Empty queue!" << endl;
         }
     }
 
@@ -85,7 +85,7 @@ public:
     }
 
     //return true if Queue is empty
-    bool empty(){
+    bool empty() {
         return counter == 0;
     }
 
@@ -94,7 +94,7 @@ public:
         if(!empty()){
             cout <<"{ ";
             Node * tmp = firstElem;
-            while(tmp->next!=0){
+            while(tmp->next != 0){
                 cout << tmp->value;
                 cout << ", ";
                 tmp = tmp->next;
@@ -104,9 +104,7 @@ public:
         }else{
             cout <<"{ }";
         }
-
     }
-
 };
 
 #endif // MYQ

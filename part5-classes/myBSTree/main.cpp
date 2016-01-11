@@ -24,6 +24,7 @@ int main()
     a.insert(15, 6);
     a.insert(15, 8);
     a.print();
+
     //delete top element 4
     cout << "Delete element 4." << endl;
     a.remove(4);

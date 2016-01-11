@@ -7,7 +7,7 @@
 using namespace std;
 
 template <class T>
-class Stack{
+class Stack {
 private:
     T *stData;
     int maxSize;
@@ -24,21 +24,23 @@ private:
         stData = newData;
         delete tmp;
     }
+
     /**
      *Check if size of stack bigger or not the maxSize
      * @return - true if stSize >= maxSize
      */
-
-    bool  notExceed() { return curSize >= maxSize; }
+    bool  notExceed() {
+        return curSize >= maxSize;
+    }
 
 public:
     //constructor
-    Stack(){
+    Stack() {
         maxSize = INI_STACK_SIZE;
         stData = new T[maxSize];
         curSize = 0;
     }
-    ~Stack(){}
+    ~Stack() {}
 
     // return stack size
     int size() const {
@@ -59,7 +61,7 @@ public:
         if(curSize != 0){
             return stData[curSize-1];
         }else{
-            std::cout << "You are trying to get not exist value! Empty stack!" << std::endl;
+            cout << "You are trying to get not exist value! Empty stack!" << endl;
         }
     }
     // removes element from stack
@@ -67,13 +69,12 @@ public:
         if(curSize != 0){
             curSize--;
         }else{
-            std::cout << "You are trying to delete not exist value!" << std::endl;
-            //            exit (EXIT_FAILURE);
+            cout << "You are trying to delete not exist value!" << endl;
         }
     }
 
     //print stack
-    void toString(){
+    void toString() {
         cout << "{ ";
         for(int i = 0; i < curSize; i++){
             cout << stData[i];
@@ -85,7 +86,7 @@ public:
     }
 
     //return true if stack is empty
-    bool isEmpty(){
+    bool isEmpty() {
         return curSize == 0;
     }
 };
