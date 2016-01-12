@@ -11,7 +11,7 @@ private:
     // create structure of node where we save value and pointer to next elem
     struct Node {
         T value;
-        Node * next;
+        Node* next;
         Node () {}       //empty constructor
         Node (T val) {
             value = val;
@@ -93,7 +93,7 @@ public:
     void toString() {
         if(!empty()){
             cout <<"{ ";
-            Node * tmp = firstElem;
+            Node* tmp = firstElem;
             while(tmp->next != 0){
                 cout << tmp->value;
                 cout << ", ";

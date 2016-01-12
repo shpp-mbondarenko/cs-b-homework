@@ -9,18 +9,18 @@ using namespace std;
 template <class T>
 class Stack {
 private:
-    T *stData;
+    T* stData;
     int maxSize;
     int curSize;
 
     // increase vector's capacity twice and duplicate data to a new storage
     void enhance() {
         maxSize *= 2;
-        T *newData = new T[maxSize];
+        T* newData = new T[maxSize];
         for(int i = 0; i < curSize; i++){
             newData[i] = stData[i];
         }
-        T *tmp = stData;
+        T* tmp = stData;
         stData = newData;
         delete tmp;
     }
@@ -59,7 +59,7 @@ public:
     // returns top element of stack
     T top() {
         if(curSize != 0){
-            return stData[curSize-1];
+            return stData[curSize - 1];
         }else{
             cout << "You are trying to get not exist value! Empty stack!" << endl;
         }
@@ -78,7 +78,7 @@ public:
         cout << "{ ";
         for(int i = 0; i < curSize; i++){
             cout << stData[i];
-            if(i != curSize-1){
+            if(i != curSize - 1){
                 cout <<", ";
             }
         }

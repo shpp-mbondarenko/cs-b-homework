@@ -14,7 +14,7 @@ private:
         K key;
         T val;
         int height;
-        Node(){};
+        Node() {};
         Node(T value, K keyval) {
             val = value;
             key = keyval;
@@ -161,12 +161,12 @@ private:
     /* go through all tree */
     void infixTraverseTree(Node* t, int k = 0) {
         if(t != NULL){
-            infixTraverseTree(t->left, k+3);
+            infixTraverseTree(t->left, k + 3);
             for(int i = 0; i < k; i++){
                 cout << "   ";
             }
             cout << t->key <<" : " << t->val << endl;
-            infixTraverseTree(t->right, k+3);
+            infixTraverseTree(t->right, k + 3);
         }
     }
 

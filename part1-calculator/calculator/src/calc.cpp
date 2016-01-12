@@ -81,20 +81,15 @@ string splitIntoTokens(int pos, string inputExpression) {
  * @return - Priority of operator
  */
 int getPriority(char ch) {
-    int res;
     if(ch == '+' || ch == '-'){
-        res = 0;
+        return 0;
+    }else if(ch == '*' || ch == '/'){
+        return 1;
+    }else if(ch == '^'){
+        return 2;
+    }else{
+        return -1;
     }
-    if(ch == '*' || ch == '/'){
-        res = 1;
-    }
-    if(ch == '^'){
-        res = 2;
-    }
-    if(ch == '('){
-        res = -1;
-    }
-    return res;
 }
 
 /**

@@ -121,9 +121,9 @@ public:
     //print Queue
     void toString() {
         if(!empty()){
-            cout << counter  << endl;
+            cout << counter << endl;
             cout <<"{ ";
-            Node * tmp = firstElem;
+            Node* tmp = firstElem;
             for(int i=1; i<counter; i++){
                 cout << tmp->value;
                 cout << ", ";

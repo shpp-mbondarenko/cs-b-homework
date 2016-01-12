@@ -54,7 +54,7 @@ public:
             }
             return res->value;
         }else{
-            std::cout << "Error! Try get too high index list (element not exist)." << std::endl;
+            cout << "Error! Try get too high index list (element not exist)." << endl;
             return NULL;
         }
     }
@@ -64,7 +64,7 @@ public:
         return counter;
     }
 
-    //if counter==0 return true
+    //if counter == 0 return true
     bool empty() {
         return (size() == 0);
     }
@@ -72,7 +72,7 @@ public:
     //first element return
     T front() {
         if (empty()){
-            std::cout << "Error! Try front() from empty list." << std::endl;
+            cout << "Error! Try front() from empty list." << endl;
         }else{
             return head->value;
         }
@@ -81,7 +81,7 @@ public:
     //return last element of list
     T back() {
         if(empty()){
-            std::cout << "Error! Try back() from empty list." << std::endl;
+            cout << "Error! Try back() from empty list." << endl;
         }else{
             return tail->value;
         }

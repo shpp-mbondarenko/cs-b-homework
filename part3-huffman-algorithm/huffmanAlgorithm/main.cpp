@@ -121,7 +121,7 @@ void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes) {
         Node *sonR = ListOfPointersToNodes.front();
         ListOfPointersToNodes.pop_front();
 
-        Node *parent = new Node (sonL,sonR);
+        Node *parent = new Node (sonL, sonR);
         ListOfPointersToNodes.push_back(parent);
     }
 }
@@ -162,7 +162,7 @@ vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<b
     //    cout << "Size of vector code: " << sizeOfCodedMessage <<endl;
     //adding to end of vector "0" till codeMessage%8 = 0
     if(sizeOfCodedMessage%8 != 0){
-        while((codedMessage->size())%8 !=0){
+        while((codedMessage->size()) % 8 != 0){
             codedMessage->push_back(0);
         }
     }
@@ -269,7 +269,7 @@ void decryptCompressedFile(string fCoded, string fDecoded) {
         counter = counter + 8;
     }
     vector<bool> res;
-    for(int i = 0; i<(codeMessage.size()-(codeMessage.size()- sizeOfMessage)); i++){
+    for(int i = 0; i < (codeMessage.size() - (codeMessage.size() - sizeOfMessage)); i++){
         res.push_back(codeMessage[i]);
         if(tab[res]){
             dec << tab[res];
