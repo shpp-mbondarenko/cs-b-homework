@@ -51,7 +51,7 @@ public:
         return firstElem->value;
     }
 
-    //return last element of list
+    //return last element of queue
     T back() {
         if(empty()){
             cout << "Error! Try back() from empty list." << endl;
@@ -60,9 +60,9 @@ public:
         }
     }
 
-    //add to end of list
-    void push(T value, P pri) {
-        Node* tmp = new Node(value, pri);
+    //add to queue
+    void push(T value, P prior) {
+        Node* tmp = new Node(value, prior);
         if(empty()){
             firstElem = tmp;
             lastElem = tmp;
@@ -87,14 +87,14 @@ public:
             tmp->next = h;
             tmp->prev = curnode;
             curnode->next = tmp;
-            if(h!=0){
-                h -> prev = tmp;
+            if(h != 0){
+                h->prev = tmp;
             }
         }
         counter++;
     }
 
-    //delete first element in list
+    //delete first element in queue
     void pop() {
         if(empty()){
             cout << "Error! Empty queue." << endl;
@@ -124,7 +124,7 @@ public:
             cout << counter << endl;
             cout <<"{ ";
             Node* tmp = firstElem;
-            for(int i=1; i<counter; i++){
+            for(int i = 1; i < counter; i++){
                 cout << tmp->value;
                 cout << ", ";
                 tmp = tmp->next;

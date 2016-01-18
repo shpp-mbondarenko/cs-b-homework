@@ -12,8 +12,8 @@ private:
     struct Node {
         T value;
         Node* next;
-        Node () {}       //empty constructor
-        Node (T val) {
+        Node() {}       //empty constructor
+        Node(T val) {
             value = val;
             next = 0;
         }
@@ -31,7 +31,7 @@ public:
     ~Queue() {}
 
     //add value to Queue
-    void push (T val) {
+    void push(T val) {
         Node* tmp = new Node(val);
         if(counter == 0){
             firstElem = tmp;
@@ -92,7 +92,7 @@ public:
     //print Queue
     void toString() {
         if(!empty()){
-            cout <<"{ ";
+            cout << "{ ";
             Node* tmp = firstElem;
             while(tmp->next != 0){
                 cout << tmp->value;
@@ -102,7 +102,7 @@ public:
             cout << tmp->value;
             cout << " }" << endl;
         }else{
-            cout <<"{ }";
+            cout << "{ }";
         }
     }
 };

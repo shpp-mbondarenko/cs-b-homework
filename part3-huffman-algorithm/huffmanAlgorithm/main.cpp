@@ -31,21 +31,21 @@ public:
 
 //sort list of node pointers
 struct sortList {
-    bool operator()(Node* l, Node* r) const
-    {return l -> quan < r -> quan;}
+    bool operator()(Node *l, Node *r) const
+    {return l->quan < r->quan;}
 };
 
 //print tree
 void print(Node *root, unsigned k = 0) {
     if(root != NULL){
-        print(root -> left,k+3);
+        print(root->left, k+3);
         for(unsigned i = 0; i < k; i++){
             cout << "   ";
         }
-        if(root -> c != NULL){
-            cout << root -> quan << " (" << root->c << ")" <<endl;
+        if(root->c != NULL){
+            cout << root->quan << " (" << root->c << ")" <<endl;
         }else{
-            cout << root -> quan << endl;
+            cout << root->quan << endl;
         }
         print(root->right, k+3);
     }
@@ -71,7 +71,7 @@ void createTableOfEncodedCharacters(Node *root, map<char, vector<bool> > &table,
 //make list of pointers to Node from mapChar
 list <Node*> createListOfNodesContainLettersAndFrequency(map<char, int> mapChar) {
     list <Node*> lPoin;
-    map<char, int>:: iterator i;
+    map<char, int>::iterator i;
     for(i = mapChar.begin(); i != mapChar.end(); ++i){
         Node *p = new Node;
         p->c = i->first;
@@ -111,7 +111,7 @@ map<char, int> createMapOfCharacterFrequencyOccurrence(string fName) {
 }
 
 //create binary tree of Huffman
-void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes) {
+void createBinaryHuffmanTree(list<Node*> &ListOfPointersToNodes) {
     while(ListOfPointersToNodes.size() != 1){
         ListOfPointersToNodes.sort(sortList()); //sorting list
 
@@ -121,7 +121,7 @@ void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes) {
         Node *sonR = ListOfPointersToNodes.front();
         ListOfPointersToNodes.pop_front();
 
-        Node *parent = new Node (sonL, sonR);
+        Node *parent = new Node(sonL, sonR);
         ListOfPointersToNodes.push_back(parent);
     }
 }
@@ -130,9 +130,9 @@ void createBinaryHuffmanTree(list <Node*> &ListOfPointersToNodes) {
 void printMap(map<char, vector<bool> > table) {
     int y = 0;
     //    show elements of "table" map
-    map<char, vector<bool> > ::iterator z;
+    map<char, vector<bool> >::iterator z;
     for(z = table.begin(); z != table.end(); ++z){
-        cout <<y++ <<" " << z->first << " : ";
+        cout << y++ <<" " << z->first << " : ";
         vector<bool> tmp = z->second;
         for(int i = 0; i < tmp.size(); i++){
             cout << tmp[i];
@@ -161,7 +161,7 @@ vector<bool>* createEncodedRepresentationOfFile(string fName, map<char, vector<b
     int sizeOfCodedMessage = codedMessage->size();
     //    cout << "Size of vector code: " << sizeOfCodedMessage <<endl;
     //adding to end of vector "0" till codeMessage%8 = 0
-    if(sizeOfCodedMessage%8 != 0){
+    if(sizeOfCodedMessage % 8 != 0){
         while((codedMessage->size()) % 8 != 0){
             codedMessage->push_back(0);
         }
@@ -192,7 +192,7 @@ void writeInDocumentCompressedFile(string codedFile, string fName, map<char, vec
     char buf = 0;
     fout.put(sizeOfTableMap); // write in file size of table map<char, vector<bool>>
     //writing in file char and his code
-    map<char, vector<bool> > ::iterator q;
+    map<char, vector<bool> >::iterator q;
     for(q = table.begin(); q != table.end(); ++q){
         //1 byte writing char from map
         char c = q->first;
@@ -210,7 +210,7 @@ void writeInDocumentCompressedFile(string codedFile, string fName, map<char, vec
     }
 
     //writing length of coded message, use 4 byte
-    fout.write ((char *)&sizeOfCodedMessage, sizeof(sizeOfCodedMessage));
+    fout.write ((char *) &sizeOfCodedMessage, sizeof(sizeOfCodedMessage));
 
     //writing in file coded message
     int count = 0; buf = 0;
@@ -243,7 +243,7 @@ void decryptCompressedFile(string fCoded, string fDecoded) {
         char len;
         stream.get(len);
         int num = 0;
-        stream.read((char*)& num, sizeof(int));
+        stream.read((char*) &num, sizeof(int));
         vector<bool> keyCode;
         num = num << (sizeof(num) * 8 - len);
         for(char u = 0; u < len; u++){
@@ -253,7 +253,7 @@ void decryptCompressedFile(string fCoded, string fDecoded) {
         tab[keyCode] = value;
     }
     int sizeOfMessage = 0;
-    stream.read((char*)& sizeOfMessage, sizeof(sizeOfMessage));
+    stream.read((char*) &sizeOfMessage, sizeof(sizeOfMessage));
     vector<bool> codeMessage; //all text in one vector
     int counter = 0;
     int counterForByte = 0;

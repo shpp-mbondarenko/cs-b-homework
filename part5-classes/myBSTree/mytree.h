@@ -53,7 +53,7 @@ private:
     }
 
 
-    /* Deleting ode with key "k" */
+    /* Deleting node with key "k" */
     Node* removeNode(Node* n, K k) {
         if(n == NULL){
             cout << "You can't delete node from empty tree!" << endl;

@@ -48,7 +48,7 @@ public:
  * @return - Vector two dimensional comprising of 0 and 1
  */
 Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename) {
-    GBufferedImage* img = new GBufferedImage(0,0,900,900);
+    GBufferedImage* img = new GBufferedImage(0, 0, 900, 900);
     img->load(filename);
     int imgWidth = img->getWidth();
     int imgHeight = img->getHeight();
@@ -56,7 +56,7 @@ Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename) {
     for(int i = 0; i < imgHeight; i++){
         for(int j = 0; j < imgWidth; j++){
             int pixColor = img->getRGB(j, i);
-            if(img -> getBlue(pixColor) < 128 && img -> getGreen(pixColor) < 128 && img -> getRed(pixColor) < 128){
+            if(img->getBlue(pixColor) < 128 && img->getGreen(pixColor) < 128 && img->getRed(pixColor) < 128){
                 res[i][j] = 1;
             }
         }

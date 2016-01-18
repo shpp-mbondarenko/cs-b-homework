@@ -110,13 +110,13 @@ double processingQueueOfPostfixNotation(Queue<string> postfixNotat) {
         string tmp = vec[i];
         if(isOperator(tmp[0]) && i >= 2){
             string tok = vec[i];
-            double secondOperand = atof(vec[i-1].c_str());
-            double firstOperand = atof(vec[i-2].c_str());
-            double calcResult =  executeOperation(firstOperand,secondOperand,tok[0]);
+            double secondOperand = atof(vec[i - 1].c_str());
+            double firstOperand = atof(vec[i - 2].c_str());
+            double calcResult =  executeOperation(firstOperand, secondOperand, tok[0]);
             string r2 = to_string(calcResult);
-            vec.set(i-2, r2);
-            vec.remove(i-1);
-            vec.remove(i-1);
+            vec.set(i - 2, r2);
+            vec.remove(i - 1);
+            vec.remove(i - 1);
             i = 0;
         }
     }
@@ -221,7 +221,7 @@ void calculateResult(string &inputExpression, Map<string, string> &variablesMap)
                 postfixNotation.enqueue(token);
             }
             if(token == "("){
-                operandStack.push(token);//add "(" to stack
+                operandStack.push(token);   //add "(" to stack
             }
             if(token == ")"){
                 while(operandStack.peek() != "("){
@@ -278,8 +278,8 @@ bool checkValidOperatorsInput(string &inputExpression) {
     bool res;
     for(int i = 0; i < inputExpression.length(); i++){
         char ch = inputExpression[i];
-        char ch2 = inputExpression[i+1];
-        if((isOperator(ch) && (ch != '(') && (ch != ')'))&&(isOperator(ch2) && (ch2 != '(') && (ch2 != ')'))){
+        char ch2 = inputExpression[i + 1];
+        if((isOperator(ch) && (ch != '(') && (ch != ')')) && (isOperator(ch2) && (ch2 != '(') && (ch2 != ')'))){
             res = false;
             cout << "Wrong writing operator's. Your formula is invalid! ";
             break;
@@ -287,7 +287,7 @@ bool checkValidOperatorsInput(string &inputExpression) {
             res = true;
         }
     }
-    if(isOperator(inputExpression[(inputExpression.length())-1])){
+    if(isOperator(inputExpression[(inputExpression.length()) - 1])){
         res = false;
     }
     return res;
