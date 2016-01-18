@@ -83,7 +83,7 @@ public:
             while(curnode->next != 0 && (curnode->next->priority) >= (tmp->priority)){
                 curnode = curnode->next;
             }
-            Node* h = curnode ->next;
+            Node* h = curnode->next;
             tmp->next = h;
             tmp->prev = curnode;
             curnode->next = tmp;

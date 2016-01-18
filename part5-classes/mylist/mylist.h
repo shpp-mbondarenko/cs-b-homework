@@ -44,8 +44,8 @@ public:
             for(int y = 0; y < i; y++){
                 if(y == 0){
                     res->value = head->value;
-                    res->next = head ->next;
-                    res->prev = head -> prev;
+                    res->next = head->next;
+                    res->prev = head->prev;
                 }
                 if(y != 0){
                     res->value = res->next->value;
