@@ -26,29 +26,32 @@ private:
     };
     Node* root;
 
+    int leftSubtreeLenght;
+    int rightSubtreeLenght;
+
     //find height of root
     int findHeight(Node* root) {
         if(root == NULL)
             return -1;
-        int lefth = findHeight(root->left);
-        int righth = findHeight(root->right);
+        int leftHeight = findHeight(root->left);
+        int rightHeight = findHeight(root->right);
 
-        if(lefth > righth){
-            return lefth + 1;
+        if(leftHeight > rightHeight){
+            return leftHeight + 1;
         }else{
-            return righth + 1;
+            return rightHeight + 1;
         }
     }
 
     /* find factor balase of BSTree */
     int balanceFactor(Node* n) {
-        return findHeight(n->right) - findHeight(n->left);
+        return leftSubtreeLenght - rightSubtreeLenght;
     }
 
     /* fixing height of root node */
     void fixHeight(Node* n) {
-        int hl = findHeight(n->left);               // Getting height of left subtree
-        int hr = findHeight(n->right);              // Getting height of right subtree
+        int hl = leftSubtreeLenght = findHeight(n->left);               // Getting height of left subtree
+        int hr = rightSubtreeLenght = findHeight(n->right);              // Getting height of right subtree
         n->height = ((hl > hr) ? hl : hr) + 1;      // root height is longest height of subtree +1
     }
 
@@ -135,23 +138,24 @@ private:
         if(t == NULL){
             cout << "You trying to look in empty tree. Please add elements, first." << endl;
             return NULL;
-        }
-        if(key == t->key){
-            return t;
-        }
-        if(key < t->key){
-            if(t->left != NULL && (t->left->key) > key){
-                cout << "Sorry, can't find value, with this key." << endl;
-                return NULL;
-            }else{
-                return findNode(t->left, key);
+        }else{
+            if(key == t->key){
+                return t;
             }
-        }else if(key > t->key){
-            if(t->right != NULL && (t->right->key) < key){
-                cout << "Sorry, can't find value, with this key." << endl;
-                return NULL;
-            }else{
-                return findNode(t->right, key);
+            if(key < t->key){
+                if(t->left != NULL && (t->left->key) > key){
+                    cout << "Sorry, can't find value, with this key." << endl;
+                    return NULL;
+                }else{
+                    return findNode(t->left, key);
+                }
+            }else if(key > t->key){
+                if(t->right != NULL && (t->right->key) < key){
+                    cout << "Sorry, can't find value, with this key." << endl;
+                    return NULL;
+                }else{
+                    return findNode(t->right, key);
+                }
             }
         }
     }
@@ -215,7 +219,7 @@ public:
     T find(K key) {
         Node* tmp = findNode(root, key);
         if(tmp == NULL){
-            return NULL;
+            return 0;
         }else{
             return tmp->val;
         }

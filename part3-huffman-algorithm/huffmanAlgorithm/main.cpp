@@ -111,18 +111,18 @@ map<char, int> createMapOfCharacterFrequencyOccurrence(string fName) {
 }
 
 //create binary tree of Huffman
-void createBinaryHuffmanTree(list<Node*> &ListOfPointersToNodes) {
-    while(ListOfPointersToNodes.size() != 1){
-        ListOfPointersToNodes.sort(sortList()); //sorting list
+void createBinaryHuffmanTree(list<Node*> &listOfPointersToNodes) {
+    while(listOfPointersToNodes.size() != 1){
+        listOfPointersToNodes.sort(sortList()); //sorting list
 
         //peek and pop smalest two elements in list
-        Node *sonL = ListOfPointersToNodes.front();
-        ListOfPointersToNodes.pop_front();
-        Node *sonR = ListOfPointersToNodes.front();
-        ListOfPointersToNodes.pop_front();
+        Node *sonL = listOfPointersToNodes.front();
+        listOfPointersToNodes.pop_front();
+        Node *sonR = listOfPointersToNodes.front();
+        listOfPointersToNodes.pop_front();
 
         Node *parent = new Node(sonL, sonR);
-        ListOfPointersToNodes.push_back(parent);
+        listOfPointersToNodes.push_back(parent);
     }
 }
 

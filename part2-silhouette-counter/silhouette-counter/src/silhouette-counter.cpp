@@ -48,7 +48,7 @@ public:
  * @return - Vector two dimensional comprising of 0 and 1
  */
 Vector<Vector<bool> > createBinaryRepresenationOfFile(string filename) {
-    GBufferedImage* img = new GBufferedImage(0, 0, 900, 900);
+    GBufferedImage* img = new GBufferedImage();
     img->load(filename);
     int imgWidth = img->getWidth();
     int imgHeight = img->getHeight();
@@ -160,24 +160,16 @@ bool isSilhouette(BlackObject c) {
  * Show to user, result of search
  * @param filename - User's image, filename.
  */
-void countSilhouettes(string filename) {
+int countSilhouettes(string filename) {
     int approxSilho = 0;
     Vector<Vector<bool> > img = createBinaryRepresenationOfFile(filename);
     Vector<BlackObject> objects = getCollectionOfBlackObjects(img);
-    int validObj = objects.size();
-    int imgWidth = img[0].size();
-    int imgHeight = img.size();
-    int imgSize = imgWidth * imgHeight;
     for(BlackObject c : objects){
         if(isSilhouette(c)){
             approxSilho++;
         }
-        if((c.getVec().size()) < (imgSize / 1000)){
-            validObj--;
-        }
     }
-    cout << "In file " << filename << " was found BlackObject " << validObj << " objects. And approximately ";
-    cout << approxSilho << " people." <<  endl;
+    return approxSilho;
 }
 
 /**
@@ -195,13 +187,13 @@ int main() {
             string fName;
             cout << "Input filename:";
             getline(cin, fName);
-            countSilhouettes(fName);
+            cout << "In file " << fName << " was found " << countSilhouettes(fName) << " people." << endl;
         }
         if(choice == "2"){
-            countSilhouettes("action.jpg");
-            countSilhouettes("f.jpg");
-            countSilhouettes("a.png");
-            countSilhouettes("4in1.jpg");
+            cout << "In file 1.jpg was found " << countSilhouettes("1.jpg") << " people." << endl;
+            cout << "In file 2.jpg was found " << countSilhouettes("2.jpg") << " people." << endl;
+            cout << "In file 3.png was found " << countSilhouettes("3.png") << " people." << endl;
+            cout << "In file 4.jpg was found " << countSilhouettes("4.jpg") << " people." << endl;
         }else{
             cout << "Input is wrong! Try again!";
         }

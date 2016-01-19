@@ -97,7 +97,7 @@ int getPriority(char ch) {
  * @param postfixNotat - Queue of operators and operands in postfix notation
  * @return - Result of user's expression
  */
-double processingQueueOfPostfixNotation(Queue<string> postfixNotat) {
+double calculatingPostfixNotation(Queue<string> postfixNotat) {
     double res;
     Vector<string> vec;
     while(!postfixNotat.isEmpty()){
@@ -204,24 +204,26 @@ void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& 
  * This function show to user - result
  * @param inputExpression - string of user's input
  * @param variablesMap - Collection of variables
+ * @return endRes - result of calculating
  */
-void calculateResult(string &inputExpression, Map<string, string> &variablesMap) {
+double calculateResult(string &inputExpression, Map<string, string> &variablesMap) {
+    double endRes;
     if(replaceVariablesInExpression(inputExpression, variablesMap)){
         myStack<string> operandStack;
         Queue<string> postfixNotation;
         for(int pos = 0; pos < inputExpression.length(); pos++){
             string token;
             token = splitIntoTokens(pos, inputExpression);
-            int tokenLenght = token.length();
-            if(tokenLenght > 1){
-                pos += tokenLenght - 1;
+            int lengthOfPiece = token.length();
+            if(lengthOfPiece > 1){
+                pos += lengthOfPiece - 1;
             }
             //if token is number then add to queue
             if(!isOperator(token[0])){
                 postfixNotation.enqueue(token);
             }
             if(token == "("){
-                operandStack.push(token);   //add "(" to stack
+                operandStack.push(token);
             }
             if(token == ")"){
                 while(operandStack.peek() != "("){
@@ -242,9 +244,9 @@ void calculateResult(string &inputExpression, Map<string, string> &variablesMap)
             string a = operandStack.pop();
             postfixNotation.enqueue(a);
         }
-        double endRes = processingQueueOfPostfixNotation(postfixNotation);
-        cout << "RESULT = " << endRes << endl;
+       endRes = calculatingPostfixNotation(postfixNotation);
     }
+    return endRes;
 }
 
 /**
@@ -340,12 +342,15 @@ int main() {
 
     while(true){
         cout << "This is a calculator!" << endl;
-        string inputExpression = getLine("Enter formula:");
+        string inputExpression = getLine("Enter expression:");
         if(inputExpression == "exit"){
             break;
         }
+        if(inputExpression == ""){
+            cout << "You not entered an expression! Please, try again!" << endl;
+        }
         if(checkValidBracketsInput(inputExpression) && checkValidOperatorsInput(inputExpression)){
-            calculateResult(inputExpression, variablesContainer);
+           cout << "RESULT = " << calculateResult(inputExpression, variablesContainer) << endl;
         }
     }
     return 0;
