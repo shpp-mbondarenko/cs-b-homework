@@ -13,8 +13,16 @@
 
 using namespace std;
 
-
 //functions declaration
+//fill in table of error messages
+void getErrorTable(Map<int, string> &errorCode){
+    errorCode[1] = "Your variable's name is incorrect.";
+    errorCode[2] = "Your input is incorrect. Please try again!";
+    errorCode[3] = "Your brackets is invalid! Please try again!";
+    errorCode[4] = "Wrong writing operator's. Your formula is invalid!";
+    errorCode[5] = "In input expression, was not find this variable!";
+}
+
 /**
  * Implement operations between two numbers
  * @param firstParam - First parameter
@@ -130,7 +138,7 @@ double calculatingPostfixNotation(Queue<string> postfixNotat) {
  * @param variablesMap - Collection of variables
  * @return - True - all variables are replaced and we can continue calculate
  */
-bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &variablesMap) {
+bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &variablesMap, int &codeOfError) {
     bool passCondition = true;
     string key;
     for(int i = 0; i < inputExpression.length(); i++){ //if we have variables - ask user to enter a number and replace string
@@ -142,10 +150,9 @@ bool replaceVariablesInExpression(string &inputExpression, Map<string, string> &
             if(variablesMap.containsKey(key)){
                 int kLen = key.length();
                 inputExpression.replace(i-kLen, kLen, variablesMap[key]);
-                /*cout << "EXP " << inputExpression << endl;*/
             }else{
                 passCondition = false;
-                cout << "In input expression, was not find this variable!" << endl;
+                codeOfError = 5;
             }
         }
     }
@@ -206,9 +213,9 @@ void addOperatorToPostfixNotation(myStack<string>& operandStack, Queue<string>& 
  * @param variablesMap - Collection of variables
  * @return endRes - result of calculating
  */
-double calculateResult(string &inputExpression, Map<string, string> &variablesMap) {
+double calculateResult(string &inputExpression, Map<string, string> &variablesMap, int &codeOfError) {
     double endRes;
-    if(replaceVariablesInExpression(inputExpression, variablesMap)){
+    if(replaceVariablesInExpression(inputExpression, variablesMap, codeOfError)){
         myStack<string> operandStack;
         Queue<string> postfixNotation;
         for(int pos = 0; pos < inputExpression.length(); pos++){
@@ -244,7 +251,7 @@ double calculateResult(string &inputExpression, Map<string, string> &variablesMa
             string a = operandStack.pop();
             postfixNotation.enqueue(a);
         }
-       endRes = calculatingPostfixNotation(postfixNotation);
+        endRes = calculatingPostfixNotation(postfixNotation);
     }
     return endRes;
 }
@@ -253,7 +260,7 @@ double calculateResult(string &inputExpression, Map<string, string> &variablesMa
  * Check if user input have right quantity of round brackets
  * @param inputExpression - string of user's input
  */
-bool checkValidBracketsInput(string &inputExpression) {
+bool checkValidBracketsInput(string &inputExpression, int &codeOfError) {
     int openB = 0;
     int closeB = 0;
     for(int i = 0; i < inputExpression.length(); i++){
@@ -266,7 +273,7 @@ bool checkValidBracketsInput(string &inputExpression) {
         }
     }
     if((openB == closeB) == false){
-        cout << "Your brackets is invalid! Please try again!" << endl;
+        codeOfError = 3;
     }
     return openB == closeB;
 }
@@ -276,14 +283,14 @@ bool checkValidBracketsInput(string &inputExpression) {
  * @param inputExpression - string of user's input
  * @return - true if we have right expression
  */
-bool checkValidOperatorsInput(string &inputExpression) {
+bool checkValidOperatorsInput(string &inputExpression, int &codeOfError) {
     bool res;
     for(int i = 0; i < inputExpression.length(); i++){
         char ch = inputExpression[i];
         char ch2 = inputExpression[i + 1];
         if((isOperator(ch) && (ch != '(') && (ch != ')')) && (isOperator(ch2) && (ch2 != '(') && (ch2 != ')'))){
             res = false;
-            cout << "Wrong writing operator's. Your formula is invalid! ";
+            codeOfError = 4;
             break;
         }else{
             res = true;
@@ -301,7 +308,7 @@ bool checkValidOperatorsInput(string &inputExpression) {
  * @param inputVariable - string of user's input
  * @param variablesMap - place where we store variables
  */
-void addVariableToCalculator(string inputVariable, Map<string, string> &variablesMap) {
+void addVariableToCalculator(string inputVariable, Map<string, string> &variablesMap, int &codeOfError) {
     string key;
     string value;
     int cursorPosition = 0;
@@ -310,13 +317,13 @@ void addVariableToCalculator(string inputVariable, Map<string, string> &variable
             key += inputVariable[cursorPosition];
             cursorPosition++;
         }else{
-            cout << "Your variable's name is incorrect." << endl;
+            codeOfError = 1;
             cursorPosition = inputVariable.length();
         }
     }
     cursorPosition++;
     if(cursorPosition >= inputVariable.length()){
-        cout << "Your input is incorrect. Please try again!" << endl;
+        codeOfError = 2;
     }else{
         //now make value
         while (cursorPosition < inputVariable.length()){
@@ -331,13 +338,20 @@ void addVariableToCalculator(string inputVariable, Map<string, string> &variable
 int main() {
     //for storing ours variables create collection map with variable as a key
     Map<string, string> variablesContainer;
+    Map<int, string> errorCode;
+    getErrorTable(errorCode);
+    int codeOfError = 0;
     while(true){
         cout << "Enter your variables. Example a=1" << endl;
         string inputVariable = getLine("Enter variable:");
         if(inputVariable == "exit"){
             break;
         }
-        addVariableToCalculator(inputVariable, variablesContainer);
+        addVariableToCalculator(inputVariable, variablesContainer, codeOfError);
+        if(codeOfError != 0){
+            cout << errorCode[codeOfError] << endl;
+            codeOfError = 0;
+        }
     }
 
     while(true){
@@ -349,8 +363,12 @@ int main() {
         if(inputExpression == ""){
             cout << "You not entered an expression! Please, try again!" << endl;
         }
-        if(checkValidBracketsInput(inputExpression) && checkValidOperatorsInput(inputExpression)){
-           cout << "RESULT = " << calculateResult(inputExpression, variablesContainer) << endl;
+        if(checkValidBracketsInput(inputExpression, codeOfError) && checkValidOperatorsInput(inputExpression, codeOfError)){
+            cout << "RESULT = " << calculateResult(inputExpression, variablesContainer, codeOfError) << endl;
+        }
+        if(codeOfError != 0){
+            cout << errorCode[codeOfError] << endl;
+            codeOfError = 0;
         }
     }
     return 0;
